@@ -32,9 +32,9 @@
 REACT_APP_SERVER_HOST="http://localhost:8000"
 REACT_APP_CLIENT_HOST="http://localhost:3000"
 
-## 2.4. 공통 convention
+### 2.4. 공통 convention
 
-### 2.4.1 git
+#### 2.4.1 git
 
 #### 2.4.2. branch
 
