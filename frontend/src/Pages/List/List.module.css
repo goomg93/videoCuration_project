@@ -1,0 +1,4 @@
+.slist {
+  display: flex;
+  flex-direction: column;
+}
