@@ -6,7 +6,7 @@ import fs from 'fs';
 dotenv.config();
 
 const makeDataFile = () => {
-  cron.schedule('* * * * *', async () => {
+  cron.schedule('59 * * * *', async () => {
     try {
       let listData = await getApi();
       listData.forEach((item, index) => {
