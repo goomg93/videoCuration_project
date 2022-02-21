@@ -1,27 +1,32 @@
 import cron from 'node-cron';
 import fetch from 'node-fetch-npm';
 import dotenv from 'dotenv';
-import fs from 'fs';
+import connectRedisServer from './redis';
 
 dotenv.config();
 
-const makeDataFile = () => {
-  cron.schedule('* * * * *', async () => {
-    try {
-      let listData = await getApi();
-      listData.forEach((item, index) => {
-        item.id = Number(index + 1);
-      });
-      listData = JSON.stringify(listData);
-      fs.writeFileSync('test.json', listData);
-      console.log('파일 최신화 완료');
-    } catch (err) {
-      console.log(err);
-    }
+const cacheSchedule = () => {
+  cron.schedule('59 * * * *', async () => {
+    await makeCache();
   });
 };
 
-async function getApi() {
+const makeCache = async () => {
+  try {
+    let listData = await getApi();
+    listData.forEach((item, index) => {
+      item.id = Number(index + 1);
+    });
+    listData = JSON.stringify(listData);
+    let redis = await connectRedisServer();
+    await redis.set('data', listData);
+    console.log('최신화완료');
+  } catch (err) {
+    console.log(`makeCache : ${err}`);
+  }
+};
+
+const getApi = async () => {
   try {
     let endDate = new Date();
     let startDate = new Date(endDate.setDate(endDate.getDate() - 1));
@@ -41,8 +46,8 @@ async function getApi() {
     const data = await response.json();
     return data.data;
   } catch (err) {
-    throw err;
+    console.log(`fetchError : ${err}`);
   }
-}
+};
 
-export default makeDataFile;
+export default { cacheSchedule, makeCache, getApi };

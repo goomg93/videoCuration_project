@@ -15,10 +15,12 @@
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
     "apollo-server-express": "^3.6.3",
+    "apollo-server-plugin-http-headers": "^0.1.4",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "node-cron": "^3.0.0",
-    "node-fetch-npm": "^2.0.4"
+    "node-fetch-npm": "^2.0.4",
+    "redis": "^4.0.3"
   },
   "devDependencies": {
     "eslint": "^8.9.0",
