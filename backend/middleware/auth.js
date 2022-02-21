@@ -14,6 +14,7 @@ const authentication = context => {
       value: null,
     });
     const err = new Error('INVALID ACCESS');
+    throw err;
   }
 };
 
