@@ -1,4 +1,5 @@
 import fs from 'fs';
+import authentication from '../auth';
 
 const getData = () => {
   const readJson = fs.readFileSync('test.json').toString();
@@ -10,7 +11,9 @@ const getData = () => {
   return dataParse;
 };
 
-const getById = id => {
+const getById = (id, context) => {
+  authentication(context);
+
   let videoFilter = getData();
   videoFilter = videoFilter.filter(video => video.id === id);
   return videoFilter[0];
@@ -19,7 +22,7 @@ const getById = id => {
 const resolvers = {
   Query: {
     videos: () => getData(),
-    video: (_, { id }) => getById(id),
+    video: (_, { id }, context) => getById(id, context),
   },
 };
 

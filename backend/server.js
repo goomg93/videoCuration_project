@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-express';
+import httpHeadersPlugin from 'apollo-server-plugin-http-headers';
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -15,6 +16,10 @@ const startApolloServer = async (typeDefs, resolvers) => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      plugins: [httpHeadersPlugin],
+      context: ({ req }) => {
+        return { setCookies: new Array(), setHeaders: new Array(), req };
+      },
     });
     await server.start();
     server.applyMiddleware({ app });
