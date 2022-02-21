@@ -13,6 +13,7 @@ const authentication = context => {
       key: 'Access-Control-Allow-Origin',
       value: null,
     });
+    const err = new Error('INVALID ACCESS');
   }
 };
 
