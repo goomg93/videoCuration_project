@@ -14,16 +14,21 @@ const cacheSchedule = () => {
 const makeCache = async () => {
   try {
     let listData = await getApi();
-    listData.forEach((item, index) => {
-      item.id = Number(index + 1);
-    });
-    listData = JSON.stringify(listData);
     let redis = await connectRedisServer();
+    reprocessData(listData);
+    listData = JSON.stringify(listData);
     await redis.set('data', listData);
     console.log('최신화완료');
   } catch (err) {
     console.log(`makeCache : ${err}`);
   }
+};
+
+const reprocessData = data => {
+  data.forEach((item, index) => {
+    item.id = Number(index + 1);
+    item.thumbnails = item.thumbnails.replace('default', 'sddefault');
+  });
 };
 
 const getApi = async () => {
