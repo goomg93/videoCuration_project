@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import List from './Pages/List/List';
+import List from './pages/List/List';
 
 function Router() {
   return (

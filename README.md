@@ -21,7 +21,7 @@
   - eslint-plugin-prettier
   - react-router-dom
   - @apollo/client
-  - youtube
+  - react-youtube
 
 ### 2.2. Back
 
