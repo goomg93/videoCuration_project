@@ -1,17 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from './Router';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Reset } from 'styled-reset';
+import {
+  createHttpLink,
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import './reset.css';
+
+const httpLink = createHttpLink({
+  uri: 'https://www2.wecode.buzzntrend.com/graphql',
+});
+
+const authLink = setContext(() => {
+  return {
+    headers: {
+      authorization: 1234,
+    },
+  };
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Reset />
     <Router />
   </ApolloProvider>,
   document.getElementById('root')
