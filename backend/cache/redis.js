@@ -2,7 +2,7 @@ const redis = require('redis');
 
 const connectRedisServer = async () => {
   try {
-    const client = redis.createClient({});
+    const client = redis.createClient();
 
     client.on('error', err => {
       throw err;
