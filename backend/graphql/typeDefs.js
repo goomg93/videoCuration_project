@@ -6,12 +6,13 @@ dotenv.config();
 const typeDefs = gql`
   type Query {
     videos: [Video]!
-    video(id: Int!): Video!
+    video(id: Int, videoId: String): Video!
+    videoPagination(index: Int!, limit: Int!): [Video]
   }
 
   type Video {
     id: Int!
-    ts: Int!
+    timestamp: Int!
     durationSeconds: Int!
     publishedAt: String!
     description: String!
