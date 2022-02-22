@@ -29,7 +29,7 @@ const makeCache = async () => {
 const getApi = async () => {
   try {
     let endDate = new Date();
-    let startDate = new Date(endDate.setDate(endDate.getDate() - 1));
+    let startDate = new Date(endDate.setDate(endDate.getDate() - 2));
     endDate = endDate.toISOString().substring(0, 10);
     startDate = startDate.toISOString().substring(0, 10);
 

@@ -5,6 +5,7 @@ import cache from './cache/mkCache';
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -13,7 +14,11 @@ const PORT = process.env.PORT;
 const startApolloServer = async (typeDefs, resolvers) => {
   try {
     const app = express();
+    app.use(cors());
     const server = new ApolloServer({
+      cors: {
+        origin: '*',
+      },
       typeDefs,
       resolvers,
       plugins: [httpHeadersPlugin],
