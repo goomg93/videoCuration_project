@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import YouTube from 'react-youtube';
+import Thumbnail from './ListComponent/Thumbnail';
 import styles from './List.module.css';
 
 const GET_LIST = gql`
@@ -8,26 +8,34 @@ const GET_LIST = gql`
     videos {
       videoId
       thumbnails
-      durationSeconds
-      ts
     }
   }
 `;
 
 function List() {
-  const [list, setList] = useState([]);
-  const { loading, error, data } = useQuery(GET_LIST);
-  console.log(data);
-  if (loading) console.log(`loading: `, loading);
-  if (error) console.log(`error: `, error);
+  const [list, setList] = useState('');
+  const [listAmt, setListAmt] = useState(10);
+
+  const { loading, error, data, networkStatus } = useQuery(GET_LIST, {
+    variables: listAmt,
+    notifyOnNetworkStatusChange: true,
+  });
+
+  if (loading) return <p>Loading....</p>;
+  if (error) return <p>Error To Render</p>;
+
+  console.log('networkStatus :', networkStatus);
+  console.log('dataLength : ', data?.videos.length);
 
   return (
-    <section>
-      {data?.videos.map(data => (
-        <section className="slist">
-          <img src={data.thumbnails} alt="thumbnails" />
-          {/* <YouTube videoId={data.videoId} /> */}
-        </section>
+    <section className={styles.ListArea}>
+      {data?.videos.map((data, index) => (
+        <Thumbnail
+          className={styles.Thumbnail}
+          thumbnails={data.thumbnails}
+          videoId={data.videoId}
+          key={index}
+        />
       ))}
     </section>
   );
