@@ -1,5 +1,4 @@
 import connectRedisServer from '../cache/redis';
-import authentication from '../middleware/auth';
 import cache from '../cache/mkCache';
 
 const videoAllData = async () => {
@@ -12,7 +11,7 @@ const videoAllData = async () => {
     const dataParse = JSON.parse(data);
     const timestampSecond = Math.floor(+new Date() / 1000);
     dataParse.forEach(item => {
-      item.ts = timestampSecond % item.durationSeconds;
+      item.timestamp = timestampSecond % item.durationSeconds;
     });
     return dataParse;
   } catch (err) {
@@ -20,12 +19,19 @@ const videoAllData = async () => {
   }
 };
 
-const getVideoDataById = async (id, context) => {
-  authentication(context);
-
-  let videoFilter = await videoAllData();
-  videoFilter = videoFilter.filter(video => video.id === id);
-  return videoFilter[0];
+const getVideoDataById = (data, id) => {
+  data = data.filter(video => video.id === id);
+  return data[0];
 };
 
-export { videoAllData, getVideoDataById };
+const getVideoDataByVideoId = (data, videoId) => {
+  data = data.filter(video => video.videoId === videoId);
+  return data[0];
+};
+
+const videoPagination = (index, limit, data) => {
+  let listData = data.splice(index - 1, limit);
+  return listData;
+};
+
+export { videoAllData, getVideoDataById, getVideoDataByVideoId, videoPagination };
