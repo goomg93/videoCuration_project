@@ -7,9 +7,6 @@ const videoAllData = async () => {
     await cache.makeCache();
   }
   const data = await redis.get('data');
-  if (data === null) {
-    throw new Error('not exsist data');
-  }
   const dataParse = JSON.parse(data);
   const timestampSecond = Math.floor(+new Date() / 1000);
   dataParse.forEach(item => {

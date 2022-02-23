@@ -43,6 +43,9 @@ const getApi = async () => {
     }
   );
   const data = await response.json();
+  if (data === null) {
+    throw new Error('not exsist data');
+  }
   return data.data;
 };
 
