@@ -1,8 +1,20 @@
+import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import styles from './Player.module.css';
 
-const Player = ({ data, refetch }) => {
+const Player = ({ data, refetch, isPlaying }) => {
   const { timestamp, videoId } = data;
+  const [playerState, setPlayerState] = useState(-1);
+
+  useEffect(() => {
+    if (playerState === 1 && !isPlaying.current) {
+      console.log('useEffect playerState1');
+      refetch();
+    } else if (playerState === 2) {
+      console.log('useEffect playerState2');
+      isPlaying.current = false;
+    }
+  }, [playerState, isPlaying, refetch]);
 
   const opts = {
     playerVars: {
@@ -22,18 +34,6 @@ const Player = ({ data, refetch }) => {
     e.target.unMute();
   };
 
-  const handleChange = e => {
-    console.log('stateChanged');
-    console.log(e);
-    if (e.data === 1) {
-      console.log('state changed to PLAYING');
-      refetch();
-      e.target.unMute();
-    }
-    if (e.data === 2) {
-    }
-  };
-
   const handlePlaybackRate = e => {
     e.target.setPlaybackRate(1);
   };
@@ -45,8 +45,17 @@ const Player = ({ data, refetch }) => {
       videoId={videoId}
       opts={opts}
       onReady={onReady}
-      onStateChange={handleChange}
+      onPlay={e => {
+        setPlayerState(e.data);
+      }}
+      onPause={e => {
+        setPlayerState(e.data);
+      }}
+      onEnd={e => {
+        e.target.playVideo();
+      }}
       onPlaybackRateChange={handlePlaybackRate}
+      onStateChange={e => console.log(e.data)}
     />
   );
 };
