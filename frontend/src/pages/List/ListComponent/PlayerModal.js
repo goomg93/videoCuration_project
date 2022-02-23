@@ -13,7 +13,7 @@ const GET_VIDEO_INFO = gql`
   }
 `;
 
-function PlayerModal({ videoId, playerState, setPlayerState }) {
+function PlayerModal({ videoId }) {
   const navigate = useNavigate();
 
   const [autoPlay, setAutoPlay] = useState(false);
@@ -26,7 +26,7 @@ function PlayerModal({ videoId, playerState, setPlayerState }) {
 
   if (loading) {
     console.log(`${loading}`);
-    return <p>Loading....</p>;
+    return <p>Keep Hovering On Player</p>;
   }
   if (error) {
     console.log(`${error}`);
@@ -41,14 +41,15 @@ function PlayerModal({ videoId, playerState, setPlayerState }) {
       // disablekb => true: 플레이어 컨트롤 block
       // controls => 0: 플레이어 컨트롤 unvisible
       autoplay: autoPlay,
+      start: data.video.timestamp,
       disablekb: true,
       controls: 0,
       mute: 1,
     },
   };
 
-  const playerOnReady = (e, timestamp) => {
-    e.target.seekTo(timestamp);
+  const playerOnReady = e => {
+    e.target.playVideo();
   };
 
   const goToDetail = videoId => {
@@ -63,11 +64,7 @@ function PlayerModal({ videoId, playerState, setPlayerState }) {
       onClick={() => goToDetail(videoId)}
     >
       <section className={styles.CoverVideo}></section>
-      <YouTube
-        videoId={videoId}
-        opts={opts}
-        onReady={playerOnReady.bind(data.video.timestamp)}
-      />
+      <YouTube videoId={videoId} opts={opts} onReady={playerOnReady} />
     </section>
   );
 }
