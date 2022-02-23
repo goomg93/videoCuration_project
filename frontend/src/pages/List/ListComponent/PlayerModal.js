@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+
+import { useQuery, gql, NetworkStatus } from '@apollo/client';
 import YouTube from 'react-youtube';
 import styles from './PlayerModal.module.css';
 
@@ -11,12 +13,15 @@ const GET_VIDEO_INFO = gql`
   }
 `;
 
-function PlayerModal({ videoId }) {
-  const [autoPlay, setAutoPlay] = useState(true);
+function PlayerModal({ videoId, playerState, setPlayerState }) {
+  const navigate = useNavigate();
+
+  const [autoPlay, setAutoPlay] = useState(false);
 
   const { loading, error, data, networkStatus } = useQuery(GET_VIDEO_INFO, {
     variables: { videoId: videoId },
-    notifyOnNetworkStatusChange: true,
+    // notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   if (loading) {
@@ -37,7 +42,7 @@ function PlayerModal({ videoId }) {
       // controls => 0: 플레이어 컨트롤 unvisible
       autoplay: autoPlay,
       disablekb: true,
-      controls: 1,
+      controls: 0,
       mute: 1,
     },
   };
@@ -46,11 +51,18 @@ function PlayerModal({ videoId }) {
     e.target.seekTo(timestamp);
   };
 
-  console.log('data: ', data);
+  const goToDetail = videoId => {
+    navigate(`/video/${videoId}`);
+  };
+
   console.log('timeStamp: ', data.video.timestamp);
 
   return (
-    <section className={styles.PlayerModalArea}>
+    <section
+      className={styles.PlayerModalArea}
+      onClick={() => goToDetail(videoId)}
+    >
+      <section className={styles.CoverVideo}></section>
       <YouTube
         videoId={videoId}
         opts={opts}
