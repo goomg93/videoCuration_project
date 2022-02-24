@@ -6,15 +6,18 @@ const Header = () => {
     <header className={styles.header}>
       <div>
         <h1>
-          <Link to="/">BUZZANDBEYOND</Link>
+          <Link to="/">BZZNBYD</Link>
         </h1>
         <nav>
           <ul>
             <li>
-              <Link to="/">HOME</Link>
+              <Link to="/video/RYwmjinI14s">react-youtube</Link>
             </li>
             <li>
-              <Link to="/">BACK</Link>
+              <Link to="/react/RYwmjinI14s">react-player</Link>
+            </li>
+            <li>
+              <Link to="/player/RYwmjinI14s">using-layer</Link>
             </li>
           </ul>
         </nav>
