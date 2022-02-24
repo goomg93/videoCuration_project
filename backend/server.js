@@ -6,6 +6,9 @@ import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import socketIO from 'socket.io';
+import http from 'http';
+import realTimeChat from './realTimeChat/chat';
 
 dotenv.config();
 
@@ -14,8 +17,10 @@ const PORT = process.env.PORT;
 const startApolloServer = async (typeDefs, resolvers) => {
   try {
     const app = express();
+    const expressServer = http.createServer(app);
+    const io = socketIO(expressServer, { cors: { origin: '*' } });
     app.use(cors());
-    const server = new ApolloServer({
+    const apolloServer = new ApolloServer({
       cors: {
         origin: '*',
       },
@@ -26,10 +31,11 @@ const startApolloServer = async (typeDefs, resolvers) => {
         return { setCookies: new Array(), setHeaders: new Array(), req };
       },
     });
-    await server.start();
-    server.applyMiddleware({ app });
-    app.listen(PORT, () => {
-      console.log(`Server ready at http://localhost:${PORT}${server.graphqlPath}`);
+    realTimeChat(io);
+    await apolloServer.start();
+    apolloServer.applyMiddleware({ app });
+    expressServer.listen(PORT, () => {
+      console.log(`Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`);
     });
   } catch (err) {
     throw err;
