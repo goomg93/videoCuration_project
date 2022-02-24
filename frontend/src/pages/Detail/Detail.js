@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 
@@ -19,6 +20,7 @@ const GET_VIDEO_INFO = gql`
 const Detail = () => {
   const params = useParams();
   const videoId = params.videoId;
+  const isPlaying = useRef(false);
 
   const {
     data: videoData,
@@ -27,18 +29,16 @@ const Detail = () => {
     refetch,
   } = useQuery(GET_VIDEO_INFO, {
     variables: { videoId: String(videoId) },
+    fetchPolicy: 'network-only',
   });
+
+  isPlaying.current = true;
 
   if (loading) {
     return <h1>Loading...........!</h1>;
   }
   if (error) {
     console.log(error);
-    console.log(JSON.stringify(error, null, 2));
-  }
-  if (videoData) {
-    console.log(videoData.video.title);
-    console.log(videoData.video.timestamp);
   }
 
   const timestampSeconds = videoData.video.timestamp;
@@ -55,7 +55,11 @@ const Detail = () => {
         {hour && <span>{hour} 시간 </span>} {min} 분 {sec} 초
       </h2>
       <main className={styles.mainWrapper}>
-        <Player data={videoData.video} refetch={refetch} />
+        <Player
+          isPlaying={isPlaying}
+          data={videoData.video}
+          refetch={refetch}
+        />
       </main>
     </section>
   );
