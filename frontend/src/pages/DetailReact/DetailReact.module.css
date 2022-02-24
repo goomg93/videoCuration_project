@@ -22,12 +22,10 @@
 
 h2 {
   text-align: center;
-  color: #ffffff;
 }
 
 .mainWrapper {
   display: flex;
   justify-content: center;
   gap: 50px;
-  color: #ffffff;
 }

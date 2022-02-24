@@ -7,7 +7,6 @@
   padding: 50px;
   box-sizing: border-box;
   background-color: white;
-  color: #ffffff;
 }
 
 .Flex {
@@ -24,13 +23,11 @@
 
 h2 {
   text-align: center;
-  color: #ffffff;
 }
 
 .mainWrapper {
   display: flex;
   justify-content: center;
   gap: 50px;
-  color: #ffffff;
   position: relative;
 }
