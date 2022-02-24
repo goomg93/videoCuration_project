@@ -14,13 +14,11 @@
   display: flex;
   justify-content: space-between;
 }
-
 .heading {
-  color: yellow;
+  color: blue;
   font-size: 50px;
   text-align: center;
 }
-
 h2 {
   font-size: large;
   text-align: center;
@@ -33,3 +31,7 @@ h2 {
   gap: 50px;
   color: #ffffff;
 }
+/* 
+.player {
+  position: relative;
+} */

@@ -11,10 +11,13 @@ const Header = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/">HOME</Link>
+              <Link to="/video/RYwmjinI14s">react-youtube</Link>
             </li>
             <li>
-              <Link to="/">BACK</Link>
+              <Link to="/react/RYwmjinI14s">react-player</Link>
+            </li>
+            <li>
+              <Link to="/player/RYwmjinI14s">using-layer</Link>
             </li>
           </ul>
         </nav>
