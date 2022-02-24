@@ -9,12 +9,7 @@ const authentication = context => {
       value: context.req.headers.origin,
     });
   } else {
-    context.setHeaders.push({
-      key: 'Access-Control-Allow-Origin',
-      value: null,
-    });
-    const err = new Error('INVALID ACCESS');
-    throw err;
+    throw new Error('INVALID ACCESS');
   }
 };
 

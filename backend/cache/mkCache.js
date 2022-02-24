@@ -12,16 +12,12 @@ const cacheSchedule = () => {
 };
 
 const makeCache = async () => {
-  try {
-    let listData = await getApi();
-    let redis = await connectRedisServer();
-    reprocessData(listData);
-    listData = JSON.stringify(listData);
-    await redis.set('data', listData);
-    console.log('최신화완료');
-  } catch (err) {
-    console.log(`makeCache : ${err}`);
-  }
+  let listData = await getApi();
+  let redis = await connectRedisServer();
+  reprocessData(listData);
+  listData = JSON.stringify(listData);
+  await redis.set('data', listData);
+  console.log('최신화완료');
 };
 
 const reprocessData = data => {
@@ -32,27 +28,25 @@ const reprocessData = data => {
 };
 
 const getApi = async () => {
-  try {
-    let endDate = new Date();
-    let startDate = new Date(endDate.setDate(endDate.getDate() - 2));
-    endDate = endDate.toISOString().substring(0, 10);
-    startDate = startDate.toISOString().substring(0, 10);
-
-    const response = await fetch(
-      `https://sandbox.apix.vling.net/v1/video/dlist/${process.env.LIST_ID}?from=0&size=50&startDate=${startDate}&endDate=${endDate}&sort=publishedAt&order=desc`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          x_api_key: process.env.SECRET_KEY,
-        },
-      }
-    );
-    const data = await response.json();
-    return data.data;
-  } catch (err) {
-    console.log(`fetchError : ${err}`);
+  let endDate = new Date();
+  let startDate = new Date(endDate.setDate(endDate.getDate() - 2));
+  endDate = endDate.toISOString().substring(0, 10);
+  startDate = startDate.toISOString().substring(0, 10);
+  const response = await fetch(
+    `https://sandbox.apix.vling.net/v1/video/dlist/${process.env.LIST_ID}?from=0&size=50&startDate=${startDate}&endDate=${endDate}&sort=publishedAt&order=desc`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        x_api_key: process.env.SECRET_KEY,
+      },
+    }
+  );
+  const data = await response.json();
+  if (data === null) {
+    throw new Error('not exsist data');
   }
+  return data.data;
 };
 
 export default { cacheSchedule, makeCache, getApi };
