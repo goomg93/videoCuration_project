@@ -6,7 +6,7 @@ import connectRedisServer from './redis';
 dotenv.config();
 
 const cacheSchedule = () => {
-  cron.schedule('59 * * * *', async () => {
+  cron.schedule('00 09 * * *', async () => {
     await makeCache();
   });
 };

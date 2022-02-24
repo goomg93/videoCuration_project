@@ -25,7 +25,6 @@ const getVideoDataById = (data, id) => {
 };
 
 const getVideoDataByVideoId = (data, videoId) => {
-  console.log(12);
   data = data.filter(video => video.videoId === videoId);
   if (data[0] === undefined) {
     throw new Error('invalid videoId');
