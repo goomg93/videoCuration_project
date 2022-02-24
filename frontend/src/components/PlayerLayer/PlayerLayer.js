@@ -16,6 +16,7 @@ const PlayerLayer = ({ data, refetch }) => {
       loop: 1,
       rel: 0,
       mute: 1,
+      controls: 0,
       modestbranding: 1,
       origin: 'http://localhost:3000/',
     },
@@ -59,7 +60,7 @@ const PlayerLayer = ({ data, refetch }) => {
   };
 
   return (
-    <article className={styles.playerContainer}>
+    <>
       <div className={styles.playerClickArea} onClick={handlePlayer} />
       <YouTube
         containerClassName={styles.youtubeWrapper}
@@ -73,7 +74,7 @@ const PlayerLayer = ({ data, refetch }) => {
         onPlaybackRateChange={handlePlaybackRate}
         ref={youtubePlayer}
       />
-    </article>
+    </>
   );
 };
 

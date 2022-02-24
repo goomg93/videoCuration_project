@@ -62,9 +62,7 @@ const Player = ({ data, refetch, isPlaying }) => {
       onPlay={() => {
         setPlayerState(1);
       }}
-      onPause={() => {
-        setPlayerState(2);
-      }}
+      onPause={() => {}}
       onEnd={e => {
         e.target.playVideo();
       }}

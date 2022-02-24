@@ -6,8 +6,6 @@
   height: auto;
   padding: 50px 50px 300px 50px;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #ffffff;
 }
 
 .Flex {
@@ -19,9 +17,10 @@
   color: GREEN;
   font-size: 50px;
   text-align: center;
+  font-family: 'Rammetto One', cursive;
 }
+
 h2 {
-  font-size: large;
   text-align: center;
   color: #ffffff;
 }

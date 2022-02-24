@@ -44,7 +44,8 @@ const Detail = () => {
 
   return (
     <section className={styles.Detail}>
-      <h1 className={styles.heading}>LAYER APPROACH WITH REACT-YOUTUBE</h1>
+      <h1 className={styles.heading}>LAYER APPROACH </h1>
+      <h1 className={styles.heading}>WITH REACT-YOUTUBE</h1>
       <h2>
         Server Timestamp: {hour && <span>{hour} 시간 </span>} {min} 분 {sec} 초
       </h2>

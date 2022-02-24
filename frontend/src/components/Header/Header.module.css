@@ -1,8 +1,8 @@
 .header {
-  border-bottom: 1px solid #ffffff;
-  background-color: #000000;
-  color: #ffffff;
+  border-bottom: 1px solid #d0d0d0;
   font-weight: bolder;
+  box-shadow: 2px 10px 20px 0 rgba(0, 0, 0, 0.08);
+  margin-bottom: 50px;
 }
 
 .header div {
@@ -15,16 +15,33 @@
   margin: 0 auto;
   padding: 20px;
 }
+
+.header h1 {
+  font-size: 2rem;
+  font-family: 'Rammetto One', cursive;
+}
+
+.header h1:hover {
+  text-shadow: 2px 2px #d0d0d0;
+}
+
 .header ul {
   display: flex;
   justify-content: flex-end;
   gap: 5px;
 }
 
-.header li + li {
-  padding-left: 5px;
-  border-left: 1px solid #ffffff;
+.header li {
+  padding: 10px;
+  border: 1px solid #d0d0d0;
+  margin-left: 10px;
 }
+
+.header li:hover {
+  transform: scale(1.1);
+  background-color: #e0e0e0;
+}
+
 .header a {
   color: inherit;
   padding: 20px 0;
