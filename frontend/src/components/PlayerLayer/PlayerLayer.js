@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import YouTube from 'react-youtube';
+import { BsPlayBtn, BsPauseBtn } from 'react-icons/bs';
 import styles from './PlayerLayer.module.css';
 
 const PlayerLayer = ({ data, refetch }) => {
@@ -61,7 +62,13 @@ const PlayerLayer = ({ data, refetch }) => {
 
   return (
     <>
-      <div className={styles.playerClickArea} onClick={handlePlayer} />
+      <div className={styles.playerClickArea} onClick={handlePlayer}>
+        {isPlaying ? (
+          <BsPauseBtn className={styles.playButton} size="10x" />
+        ) : (
+          <BsPlayBtn className={styles.playButton} size="10x" />
+        )}
+      </div>
       <YouTube
         containerClassName={styles.youtubeWrapper}
         className={styles.youtube}

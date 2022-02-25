@@ -34,15 +34,10 @@ const Detail = () => {
 
   isPlaying.current = true;
 
-  if (loading) {
-    return <h1>Loading...........!</h1>;
-  }
-  if (error) {
-    console.log(error);
-  }
+  if (loading) return <p className={styles.message}>Loading....</p>;
+  if (error) return <p className={styles.message}>Error To Render</p>;
 
   const timestampSeconds = videoData.video.timestamp;
-
   const hour = Math.floor(timestampSeconds / 60 / 60);
   const min = Math.floor((timestampSeconds - 60 * 60 * hour) / 60);
   const sec = Math.floor((timestampSeconds - 60 * 60 * hour - 60 * min) % 60);
