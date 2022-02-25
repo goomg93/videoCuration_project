@@ -1,11 +1,13 @@
 import { formatMessage } from './utils/messages';
 import { userJoin, getCurrentUser, userLeave, getRoomUsers, getUsersId } from './utils/users';
+import { insertUesrInfo, insertMsg, deleteUserInfo } from '../mongodb/chatDataHandler';
 const botName = 'Chat Bot';
 
 const realTimeChat = io => {
   io.on('connection', socket => {
     socket.on('joinRoom', ({ username, room }) => {
       const user = userJoin(socket.id, username, room);
+      insertUesrInfo(user);
       socket.join(user.room);
       socket.emit('message', formatMessage(botName, `${user.username}님 환영합니다. 😀`));
       socket.broadcast
@@ -19,6 +21,7 @@ const realTimeChat = io => {
 
     socket.on('chatMessage', msg => {
       const user = getCurrentUser(socket.id);
+      insertMsg(msg, user);
       io.to(user.room).emit('message', formatMessage(user.username, msg));
     });
 
@@ -34,6 +37,7 @@ const realTimeChat = io => {
           users: getRoomUsers(user.room),
         });
       }
+      user && deleteUserInfo(user);
     });
   });
 };

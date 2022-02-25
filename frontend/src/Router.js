@@ -7,6 +7,7 @@ import Main from './pages/Main/Main';
 import Detail from './pages/Detail/Detail';
 import DetailReact from './pages/DetailReact/DetailReact';
 import DetailLayer from './pages/DetailLayer/DetailLayer';
+import SortList from './pages/List/ListComponent/SortList';
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
         <Route path="/" element={<Layout />}>
           <Route index element={<List />} />
           <Route path="/main" element={<Main />} />
+          <Route path="/:category" element={<SortList />} />
           <Route path="/video/:videoId" element={<Detail />} />
           <Route path="/react/:videoId" element={<DetailReact />} />
           <Route path="/player/:videoId" element={<DetailLayer />} />

@@ -1,46 +1,42 @@
-import { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Thumbnail from './ListComponent/Thumbnail';
 import styles from './List.module.css';
-
-const GET_LIST = gql`
-  query VideoPagination($index: Int!, $limit: Int!) {
-    videoPagination(index: $index, limit: $limit) {
-      id
-      videoId
-      thumbnails
-    }
-  }
-`;
+import { useParams } from 'react-router-dom';
 
 function List() {
-  const [hasMore, setHasMore] = useState(false);
-  const index = useRef(1);
-  const limit = 15;
-
-  const { loading, error, data, fetchMore } = useQuery(GET_LIST, {
-    variables: { index: 1, limit: 15 },
-    notifyOnNetworkStatusChange: true,
-  });
-  if (loading) return <p>Loading....</p>;
-  if (error) return <p>Error To Render</p>;
-  if (data) {
-    const dataLength = data?.videoPagination.length;
-    index.current = index.current + dataLength;
-    if (dataLength < limit) {
-      setHasMore(false);
+  const params = useParams();
+  const GET_LIST = gql`
+    query GetList {
+      videos {
+        videoId
+        title
+        thumbnails
+        category
+        description
+      }
     }
+  `;
+
+  const { loading, error, data } = useQuery(GET_LIST);
+  if (loading) return <p>Loading....</p>;
+  if (error) {
+    console.log(error);
+    return <p>Error To Render</p>;
   }
+
   return (
     <section className={styles.ListArea}>
-      {data?.videoPagination.map((data, index) => (
-        <Thumbnail
-          className={styles.Thumbnail}
-          thumbnails={data.thumbnails}
-          videoId={data.videoId}
-          key={index}
-        />
-      ))}
+      <section className={styles.ThumbnailList} align="left">
+        {data?.videos.map((data, index) => (
+          <Thumbnail
+            // title={data.title}
+            thumbnails={data.thumbnails}
+            videoId={data.videoId}
+            key={index}
+          />
+        ))}
+      </section>
     </section>
   );
 }

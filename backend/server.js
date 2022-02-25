@@ -9,6 +9,7 @@ import cors from 'cors';
 import socketIO from 'socket.io';
 import http from 'http';
 import realTimeChat from './realTimeChat/chat';
+import { connect } from './mongodb/chatDataHandler';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
         return { setCookies: new Array(), setHeaders: new Array(), req };
       },
     });
+    connect();
     realTimeChat(io);
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
