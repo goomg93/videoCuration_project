@@ -1,0 +1,9 @@
+.MainArea {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin: 0 auto;
+  background-color: blue;
+}

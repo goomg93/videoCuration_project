@@ -30,6 +30,7 @@
 .header ul {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 5px;
 }
 
@@ -52,6 +53,7 @@
 }
 
 .header a {
+  vertical-align: centerK;
   color: inherit;
   padding: 20px 0;
 }
