@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 
@@ -30,12 +29,8 @@ const Detail = () => {
     fetchPolicy: 'network-only',
   });
 
-  if (loading) {
-    return <h1>Loading...........!</h1>;
-  }
-  if (error) {
-    console.log(error);
-  }
+  if (loading) return <p className={styles.message}>Loading....</p>;
+  if (error) return <p className={styles.message}>Error To Render</p>;
 
   const timestampSeconds = videoData.video.timestamp;
   const hour = Math.floor(timestampSeconds / 60 / 60);

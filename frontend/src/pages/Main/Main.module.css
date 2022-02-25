@@ -1,0 +1,17 @@
+.MainArea {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin: 0 auto;
+}
+
+.heading {
+  color: hotpink;
+  text-shadow: 2px 2px gray;
+  font-size: 50px;
+  text-align: center;
+  font-family: 'Rammetto One', cursive;
+  margin-bottom: 50px;
+}
