@@ -10,17 +10,17 @@ const Header = () => {
         </h1>
         <nav>
           <ul>
-            <li>
+            <li className={styles.navMenu}>
               <Link to="/main">home</Link>
             </li>
-            <li>
+            <li className={styles.navMenu}>
               <Link to="/video/s0sR8CA44eA">react-youtube</Link>
             </li>
-            <li>
-              <Link to="/react/s0sR8CA44eA">react-player</Link>
-            </li>
-            <li>
+            <li className={styles.navMenu}>
               <Link to="/player/s0sR8CA44eA">using-layer</Link>
+            </li>
+            <li className={styles.navMenu}>
+              <Link to="/react/s0sR8CA44eA">react-player</Link>
             </li>
           </ul>
         </nav>

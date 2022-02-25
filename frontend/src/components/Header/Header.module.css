@@ -40,20 +40,21 @@
   margin-left: 10px;
 }
 
-.header li:hover {
-  transform: scale(1.1);
-  background-color: #e0e0e0;
-  background-color: blanchedalmond;
-}
-
-.header li:first-of-type {
+.header .navMenu:first-of-type {
   background-color: #222222;
   color: #ffffff;
   font-weight: bolder;
 }
 
+.header .navMenu:hover {
+  transform: scale(1.1);
+  background-color: #e0e0e0;
+  background-color: blanchedalmond;
+  color: #222222;
+}
+
 .header a {
-  vertical-align: centerK;
+  vertical-align: center;
   color: inherit;
   padding: 20px 0;
 }
