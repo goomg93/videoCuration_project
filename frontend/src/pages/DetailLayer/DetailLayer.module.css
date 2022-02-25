@@ -1,3 +1,7 @@
+.message {
+  text-align: center;
+}
+
 .Detail {
   display: flex;
   flex-direction: column;

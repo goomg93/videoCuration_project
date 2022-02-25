@@ -59,10 +59,12 @@ const Player = ({ data, refetch, isPlaying }) => {
       videoId={videoId}
       opts={opts}
       onReady={onReady}
-      onPlay={() => {
-        setPlayerState(1);
+      onPlay={e => {
+        setPlayerState(e.data);
       }}
-      onPause={() => {}}
+      onPause={e => {
+        setPlayerState(e.data);
+      }}
       onEnd={e => {
         e.target.playVideo();
       }}
