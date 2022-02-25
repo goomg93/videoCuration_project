@@ -38,4 +38,15 @@ const videoPagination = (index, limit, data) => {
   return listData;
 };
 
-export { videoAllData, getVideoDataById, getVideoDataByVideoId, videoPagination };
+const videoFilterByCategory = (category, data) => {
+  data = data.filter(video => video.category.includes(category));
+  return data;
+};
+
+export default {
+  videoAllData,
+  getVideoDataById,
+  getVideoDataByVideoId,
+  videoPagination,
+  videoFilterByCategory,
+};

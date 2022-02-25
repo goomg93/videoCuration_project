@@ -1,24 +1,29 @@
-import { getVideoDataById, videoAllData, getVideoDataByVideoId, videoPagination } from './video';
+import video from './video';
 import authentication from '../middleware/auth';
 
 const resolvers = {
   Query: {
-    videos: async () => await videoAllData(),
+    videos: async () => await video.videoAllData(),
     video: async (_, { id, videoId }, context) => {
       authentication(context);
-      let data = await videoAllData();
+      let data = await video.videoAllData();
       if (id === undefined) {
-        return getVideoDataByVideoId(data, videoId);
+        return video.getVideoDataByVideoId(data, videoId);
       } else if (videoId === undefined) {
-        return getVideoDataById(data, id);
+        return video.getVideoDataById(data, id);
       } else {
         throw new Error('not input');
       }
     },
     videoPagination: async (_, { index, limit }, context) => {
       authentication(context);
-      let data = await videoAllData();
-      return videoPagination(index, limit, data);
+      let data = await video.videoAllData();
+      return video.videoPagination(index, limit, data);
+    },
+    videoFilterByCategory: async (_, { category }, context) => {
+      authentication(context);
+      let data = await video.videoAllData();
+      return video.videoFilterByCategory(category, data);
     },
   },
 };
