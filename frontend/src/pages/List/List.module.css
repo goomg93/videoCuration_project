@@ -1,9 +1,12 @@
 .ListArea {
-  width: 90%;
+  width: 100%;
+  background-color: rgb(242, 243, 246);
+}
+
+.ThumbnailList {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
-  gap: 60px;
+  width: 80%;
   margin: 0 auto;
-  background-color: pink;
 }
