@@ -8,6 +8,7 @@ const typeDefs = gql`
     videos: [Video]!
     video(id: Int, videoId: String): Video!
     videoPagination(index: Int!, limit: Int!): [Video]
+    videoFilterByCategory(category: String!): [Video]
   }
 
   type Video {
