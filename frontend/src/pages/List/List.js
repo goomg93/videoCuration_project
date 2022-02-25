@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Thumbnail from './ListComponent/Thumbnail';
 import styles from './List.module.css';
-
-const GET_LIST = gql`
-  query GetList {
-    videos {
-      videoId
-      thumbnails
-    }
-  }
-`;
+import { useParams } from 'react-router-dom';
 
 function List() {
-  const [list, setList] = useState('');
-  const [listAmt, setListAmt] = useState(10);
+  const params = useParams();
+  const GET_LIST = gql`
+    query GetList {
+      videos {
+        videoId
+        title
+        thumbnails
+        category
+        description
+      }
+    }
+  `;
 
-  const { loading, error, data, networkStatus } = useQuery(GET_LIST, {
-    variables: listAmt,
-    notifyOnNetworkStatusChange: true,
-  });
-
+  const { loading, error, data } = useQuery(GET_LIST);
   if (loading) return <p>Loading....</p>;
-  if (error) return <p>Error To Render</p>;
-
-  console.log('networkStatus :', networkStatus);
-  console.log('dataLength : ', data?.videos.length);
+  if (error) {
+    console.log(error);
+    return <p>Error To Render</p>;
+  }
 
   return (
     <section className={styles.ListArea}>
-      {data?.videos.map((data, index) => (
-        <Thumbnail
-          className={styles.Thumbnail}
-          thumbnails={data.thumbnails}
-          videoId={data.videoId}
-          key={index}
-        />
-      ))}
+      <section className={styles.ThumbnailList} align="left">
+        {data?.videos.map((data, index) => (
+          <Thumbnail
+            // title={data.title}
+            thumbnails={data.thumbnails}
+            videoId={data.videoId}
+            key={index}
+          />
+        ))}
+      </section>
     </section>
   );
 }
