@@ -1,8 +1,11 @@
 import { MongoClient } from 'mongodb';
 import getNextSequenceValue from './indexController';
+import dotenv from 'dotenv';
 
-const uri =
-  'mongodb+srv://videochat:videochat@chat.soaeo.mongodb.net/chat?retryWrites=true&w=majority';
+dotenv.config();
+
+const uri = process.env.mongodb_atlas_uri;
+
 export const client = new MongoClient(uri);
 let db;
 
