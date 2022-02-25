@@ -2,10 +2,8 @@ import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Thumbnail from './ListComponent/Thumbnail';
 import styles from './List.module.css';
-import { useParams } from 'react-router-dom';
 
 function List() {
-  const params = useParams();
   const GET_LIST = gql`
     query GetList {
       videos {
@@ -27,7 +25,7 @@ function List() {
 
   return (
     <section className={styles.ListArea}>
-      <section className={styles.ThumbnailList} align="left">
+      <section className={styles.ThumbnailList}>
         {data?.videos.map((data, index) => (
           <Thumbnail
             // title={data.title}
