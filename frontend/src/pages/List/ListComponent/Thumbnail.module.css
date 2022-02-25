@@ -6,6 +6,11 @@
   z-index: 800;
 }
 
+.ThumbnailContainer {
+  width: 50%;
+  margin: 0 auto;
+}
+
 .Thumbnails {
   width: 384px;
   height: 216px;

@@ -24,7 +24,6 @@ function PlayerModal({ videoId, playerState }) {
   });
 
   if (loading) {
-    // console.log(`${loading}`);
     return <p>Keep Hovering On Player</p>;
   }
   if (error) {

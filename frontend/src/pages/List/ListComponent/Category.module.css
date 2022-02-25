@@ -13,4 +13,12 @@
   border-radius: 30px;
   background-color: white;
   box-shadow: 10px 10px 10px gray;
+  cursor: pointer;
+  color: grey;
+  font-weight: 700;
+}
+
+.CategoryName:hover {
+  color: black;
+  font-weight: 700;
 }
