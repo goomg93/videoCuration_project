@@ -2,9 +2,8 @@ import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 
-import Player from '../../components/Player/Player';
-
-import styles from './Detail.module.css';
+import PlayerReact from '../../components/PlayerReact/PlayerReact';
+import styles from './DetailReact.module.css';
 import '../../styles/reset.css';
 import '../../styles/common.css';
 
@@ -43,18 +42,19 @@ const Detail = () => {
   }
 
   const timestampSeconds = videoData.video.timestamp;
+
   const hour = Math.floor(timestampSeconds / 60 / 60);
   const min = Math.floor((timestampSeconds - 60 * 60 * hour) / 60);
   const sec = Math.floor((timestampSeconds - 60 * 60 * hour - 60 * min) % 60);
 
   return (
     <section className={styles.Detail}>
-      <h1 className={styles.heading}>USING NPM REACT-YOUTUBE</h1>
+      <h1 className={styles.heading}>USING NPM REACT-PLAYER</h1>
       <h2>
-        Server Timestamp: {hour && <span>{hour} 시간 </span>} {min} 분 {sec} 초
+        Server timestamp: {hour && <span>{hour} 시간 </span>} {min} 분 {sec} 초
       </h2>
       <main className={styles.mainWrapper}>
-        <Player
+        <PlayerReact
           className={styles.player}
           data={videoData.video}
           refetch={refetch}

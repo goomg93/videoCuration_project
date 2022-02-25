@@ -2,16 +2,14 @@ import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 
-import Player from '../../components/Player/Player';
-
-import styles from './Detail.module.css';
+import PlayerLayer from '../../components/PlayerLayer/PlayerLayer';
+import styles from './DetailLayer.module.css';
 import '../../styles/reset.css';
 import '../../styles/common.css';
 
 const GET_VIDEO_INFO = gql`
   query VideoInfo($videoId: String!) {
     video(videoId: $videoId) {
-      title
       videoId
       timestamp
     }
@@ -21,7 +19,6 @@ const GET_VIDEO_INFO = gql`
 const Detail = () => {
   const params = useParams();
   const videoId = params.videoId;
-  const isPlaying = useRef(false);
 
   const {
     data: videoData,
@@ -32,8 +29,6 @@ const Detail = () => {
     variables: { videoId: String(videoId) },
     fetchPolicy: 'network-only',
   });
-
-  isPlaying.current = true;
 
   if (loading) {
     return <h1>Loading...........!</h1>;
@@ -49,16 +44,16 @@ const Detail = () => {
 
   return (
     <section className={styles.Detail}>
-      <h1 className={styles.heading}>USING NPM REACT-YOUTUBE</h1>
+      <h1 className={styles.heading}>LAYER APPROACH </h1>
+      <h1 className={styles.heading}>WITH REACT-YOUTUBE</h1>
       <h2>
         Server Timestamp: {hour && <span>{hour} 시간 </span>} {min} 분 {sec} 초
       </h2>
       <main className={styles.mainWrapper}>
-        <Player
+        <PlayerLayer
           className={styles.player}
           data={videoData.video}
           refetch={refetch}
-          isPlaying={isPlaying}
         />
       </main>
     </section>

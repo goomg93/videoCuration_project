@@ -16,8 +16,7 @@
 }
 
 .heading {
-  color: yellow;
-  text-shadow: 2px 2px gray;
+  color: blue;
   font-size: 50px;
   text-align: center;
   font-family: 'Rammetto One', cursive;
@@ -33,4 +32,5 @@ h2 {
   justify-content: center;
   gap: 50px;
   color: #ffffff;
+  position: relative;
 }
