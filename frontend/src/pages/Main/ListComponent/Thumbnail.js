@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PlayerModal from './PlayerModal';
 import styles from './Thumbnail.module.css';
 
-function Thumbnail({ thumbnails, videoId }) {
+function Thumbnail({ title, thumbnails, videoId }) {
   const [playerState, setPlayerState] = useState(false);
 
   const playerStateHandler = () => {
@@ -15,14 +15,17 @@ function Thumbnail({ thumbnails, videoId }) {
       onMouseEnter={playerStateHandler}
       onMouseLeave={playerStateHandler}
     >
-      <img className={styles.Thumbnails} src={thumbnails} alt="thumbnails" />
-      {playerState ? (
-        <PlayerModal
-          videoId={videoId}
-          playerState={playerState}
-          setPlayerState={setPlayerState}
-        />
-      ) : null}
+      <section className={styles.ThumbnailContainer}>
+        <img className={styles.Thumbnails} src={thumbnails} alt="thumbnails" />
+        <p>{title}</p>
+        {playerState ? (
+          <PlayerModal
+            videoId={videoId}
+            playerState={playerState}
+            setPlayerState={setPlayerState}
+          />
+        ) : null}
+      </section>
     </section>
   );
 }

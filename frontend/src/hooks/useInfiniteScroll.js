@@ -12,10 +12,16 @@ const GET_LIST = gql`
     }
   }
 `;
-const useInfiniteScroll = (index, limit) => {
+
+const useInfiniteScroll = () => {
+  const index = 1;
+  const limit = 10;
+
   const { loading, error, data, fetchMore } = useQuery(GET_LIST, {
     variables: { index: index, limit: limit },
   });
+
+  console.log('infinitescroll');
   if (loading) return loading;
   if (error) return error;
 
