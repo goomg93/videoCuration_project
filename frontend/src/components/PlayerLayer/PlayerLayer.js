@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import YouTube from 'react-youtube';
 import { BsPlayBtn, BsPauseBtn } from 'react-icons/bs';
 import styles from './PlayerLayer.module.css';
@@ -17,7 +17,8 @@ const PlayerLayer = ({ data, refetch }) => {
       loop: 1,
       rel: 0,
       mute: 1,
-      controls: 0,
+      fs: 0,
+      // controls: 0,
       modestbranding: 1,
       origin: 'http://localhost:3000/',
     },
@@ -35,17 +36,21 @@ const PlayerLayer = ({ data, refetch }) => {
     }
     console.log(youtubePlayer.current);
   };
+
   const onReady = e => {
-    e.target.playVideo();
     e.target.unMute();
     setIsPlaying(true);
   };
 
   const onPlay = e => {
-    // setIsPlaying(true);
-    // console.log(e);
-    // const currentPlayTime = e.target.getCurrentTime();
-    // e.target.seekTo(currentPlayTime);
+    setInterval(() => {
+      if (document.querySelectorAll('.ad-showing').length > 0) {
+        const video = document.querySelector('video');
+        if (video) {
+          video.currentTime = video.duration;
+        }
+      }
+    }, 500);
   };
 
   // const onPause = () => {
@@ -62,13 +67,6 @@ const PlayerLayer = ({ data, refetch }) => {
 
   return (
     <>
-      <div className={styles.playerClickArea} onClick={handlePlayer}>
-        {isPlaying ? (
-          <BsPauseBtn className={styles.playButton} size="10x" />
-        ) : (
-          <BsPlayBtn className={styles.playButton} size="10x" />
-        )}
-      </div>
       <YouTube
         containerClassName={styles.youtubeWrapper}
         className={styles.youtube}
@@ -81,6 +79,14 @@ const PlayerLayer = ({ data, refetch }) => {
         onPlaybackRateChange={handlePlaybackRate}
         ref={youtubePlayer}
       />
+      <div className={styles.playerClickArea} onClick={handlePlayer}>
+        {isPlaying ? (
+          <BsPauseBtn className={styles.playButton} size="10x" />
+        ) : (
+          <BsPlayBtn className={styles.playButton} size="10x" />
+        )}
+        <span className={styles.extendedArea} />
+      </div>
     </>
   );
 };

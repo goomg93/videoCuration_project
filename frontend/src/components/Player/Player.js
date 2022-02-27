@@ -37,6 +37,18 @@ const Player = ({ data, refetch, isPlaying }) => {
     e.target.unMute();
   };
 
+  const onPlay = e => {
+    setPlayerState(e.data);
+    //광고 제거
+    setInterval(() => {
+      if (document.querySelectorAll('.ad-showing').length > 0) {
+        const video = document.querySelector('video');
+        if (video) {
+          video.currentTime = video.duration;
+        }
+      }
+    }, 500);
+  };
   const handlePlaybackRate = e => {
     e.target.setPlaybackRate(1);
   };
@@ -59,9 +71,7 @@ const Player = ({ data, refetch, isPlaying }) => {
       videoId={videoId}
       opts={opts}
       onReady={onReady}
-      onPlay={e => {
-        setPlayerState(e.data);
-      }}
+      onPlay={onPlay}
       onPause={e => {
         setPlayerState(e.data);
       }}
