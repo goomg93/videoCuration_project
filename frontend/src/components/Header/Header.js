@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 import styles from './Header.module.css';
@@ -11,6 +12,7 @@ const GET_VIDEO_INFO = gql`
 `;
 
 const Header = () => {
+  const [youtubeId, setYoutubeId] = useState();
   const {
     data: videoData,
     loading,
@@ -20,11 +22,11 @@ const Header = () => {
     fetchPolicy: 'network-only',
   });
 
-  let youtubeId;
-
-  if (videoData) {
-    youtubeId = videoData?.video.youtubeId;
-  }
+  useEffect(() => {
+    if (videoData && !loading && !error) {
+      setYoutubeId(videoData?.video.youtubeId);
+    }
+  }, [videoData, loading, error]);
 
   return (
     <header className={styles.header}>
@@ -38,13 +40,13 @@ const Header = () => {
               <Link to="/">home</Link>
             </li>
             <li className={styles.navMenu}>
+              <Link to="/verticalscroll">scroll</Link>
+            </li>
+            <li className={styles.navMenu}>
               <Link to={`/video/${youtubeId}`}>react-youtube</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to={`/react/${youtubeId}`}>using-layer</Link>
-            </li>
-            <li className={styles.navMenu}>
-              <Link to={`/player/${youtubeId}`}>react-player</Link>
+              <Link to={`/player/${youtubeId}`}>using-layer</Link>
             </li>
           </ul>
         </nav>
