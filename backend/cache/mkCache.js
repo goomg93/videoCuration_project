@@ -24,6 +24,7 @@ const reprocessData = data => {
   data.forEach((item, index) => {
     item.id = Number(index + 1);
     item.thumbnails = item.thumbnails.replace('default', 'sddefault');
+    item.listTimestamp = 0;
   });
 };
 

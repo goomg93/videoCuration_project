@@ -8,46 +8,64 @@ const videoAllData = async () => {
   }
   const data = await redis.get('data');
   const dataParse = JSON.parse(data);
+
   const timestampSecond = Math.floor(+new Date() / 1000);
+  let totalDurationSeconds = 0;
+  let currentOverlapValue = 0;
+  let previousValue = 0;
+
   dataParse.forEach(item => {
     item.timestamp = timestampSecond % item.durationSeconds;
+    item.isNow = false;
+    totalDurationSeconds += item.durationSeconds;
   });
+
+  let totalTimestamp = timestampSecond % totalDurationSeconds;
+
+  for (let i = 0; i < dataParse.length; i++) {
+    currentOverlapValue += dataParse[i].durationSeconds;
+    if (totalTimestamp - currentOverlapValue < 0) {
+      dataParse[i].isNow = true;
+      if (i === 0) {
+        data[i].listTimestamp = totalTimestamp;
+      } else {
+        dataParse[i].listTimestamp = previousValue;
+      }
+      break;
+    } else {
+    }
+    previousValue = totalTimestamp - currentOverlapValue;
+  }
+
   return dataParse;
 };
 
-const getVideoDataById = async (data, id, start) => {
+const videoData = async () => {
   const redis = await connectRedisServer();
+  if (!(await redis.exists('data'))) {
+    await cache.makeCache();
+  }
+  const data = await redis.get('data');
+  const dataParse = JSON.parse(data);
+
+  return dataParse;
+};
+
+const getVideoDataById = (data, id) => {
   [data] = data.filter(video => video.id === id);
-  const timestampSecond = Math.floor(+new Date() / 1000);
 
   if (data === undefined) {
     throw new Error('invalid id');
   }
 
-  if (start === true) {
-    redis.set(`${data.videoId}`, timestampSecond);
-    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
-  } else if (start === false) {
-    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
-  }
-
   return data;
 };
 
-const getVideoDataByVideoId = async (data, videoId, start) => {
-  const redis = await connectRedisServer();
+const getVideoDataByVideoId = (data, videoId) => {
   [data] = data.filter(video => video.videoId === videoId);
-  const timestampSecond = Math.floor(+new Date() / 1000);
 
   if (data === undefined) {
     throw new Error('invalid videoId');
-  }
-
-  if (start === true) {
-    redis.set(`${data.videoId}`, timestampSecond);
-    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
-  } else if (start === false) {
-    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
   }
 
   return data;
@@ -69,4 +87,5 @@ export default {
   getVideoDataByVideoId,
   videoPagination,
   videoFilterByCategory,
+  videoData,
 };
