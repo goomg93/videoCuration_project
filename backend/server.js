@@ -37,12 +37,12 @@ const startApolloServer = async (typeDefs, resolvers) => {
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
     expressServer.listen(PORT, () => {
-      console.log(`Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`);
+      if (process.env.NODE_ENV !== 'production')
+        console.log(`Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`);
     });
   } catch (err) {
     console.log(err);
   }
 };
-
 startApolloServer(typeDefs, resolvers);
 cache.cacheSchedule();

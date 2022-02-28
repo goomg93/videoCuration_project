@@ -12,7 +12,7 @@ let db;
 const connect = async () => {
   try {
     await client.connect();
-    console.log('connected');
+    if (process.env.NODE_ENV !== 'production') console.log('connected');
   } catch (e) {
     console.error(e);
   }
