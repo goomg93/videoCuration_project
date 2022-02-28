@@ -15,22 +15,42 @@ const videoAllData = async () => {
   return dataParse;
 };
 
-const getVideoDataById = (data, id) => {
-  data = data.filter(video => video.id === id);
-  if (data[0] === undefined) {
+const getVideoDataById = async (data, id, start) => {
+  const redis = await connectRedisServer();
+  [data] = data.filter(video => video.id === id);
+  const timestampSecond = Math.floor(+new Date() / 1000);
+
+  if (data === undefined) {
     throw new Error('invalid id');
-  } else {
-    return data[0];
   }
+
+  if (start === true) {
+    redis.set(`${data.videoId}`, timestampSecond);
+    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
+  } else if (start === false) {
+    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
+  }
+
+  return data;
 };
 
-const getVideoDataByVideoId = (data, videoId) => {
-  data = data.filter(video => video.videoId === videoId);
-  if (data[0] === undefined) {
+const getVideoDataByVideoId = async (data, videoId, start) => {
+  const redis = await connectRedisServer();
+  [data] = data.filter(video => video.videoId === videoId);
+  const timestampSecond = Math.floor(+new Date() / 1000);
+
+  if (data === undefined) {
     throw new Error('invalid videoId');
-  } else {
-    return data[0];
   }
+
+  if (start === true) {
+    redis.set(`${data.videoId}`, timestampSecond);
+    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
+  } else if (start === false) {
+    data.timestamp = timestampSecond - (await redis.get(`${data.videoId}`));
+  }
+
+  return data;
 };
 
 const videoPagination = (index, limit, data) => {

@@ -40,7 +40,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
       console.log(`Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`);
     });
   } catch (err) {
-    throw err;
+    console.log(err);
   }
 };
 
