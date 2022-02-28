@@ -1,0 +1,41 @@
+.PlayerModalArea {
+  position: absolute;
+  top: 0;
+  z-index: 900;
+}
+
+.CoverVideo {
+  position: absolute;
+  width: 416px;
+  height: 234px;
+  cursor: pointer;
+  z-index: 1000;
+  transform: scale(1.2);
+}
+
+.BlockVideo {
+  position: absolute;
+  width: 416px;
+  height: 234px;
+  margin-top: -10px;
+  margin-left: -15px;
+  z-index: 2000;
+  transform: scale(1.2);
+  color: white;
+  background-color: darkgray;
+}
+
+a {
+  cursor: pointer;
+  color: blue;
+}
+
+a:hover {
+  color: blanchedalmond;
+}
+
+.YTPlayer {
+  margin-top: -10px;
+  margin-left: -15px;
+  transform: scale(1.2);
+}
