@@ -15,8 +15,7 @@ let domain =
     : document.location.href;
 
 const httpLink = createHttpLink({
-  uri: 'https://www2.wecode.buzzntrend.com/graphql',
-  // uri: 'http://localhost:8000/graphql',
+  uri: `${process.env.REACT_APP_EC2_SERVER}`,
 });
 
 const authLink = setContext(() => {

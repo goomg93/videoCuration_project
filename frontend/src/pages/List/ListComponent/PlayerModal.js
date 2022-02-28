@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useQuery, gql } from '@apollo/client';
 import YouTube from 'react-youtube';
 import styles from './PlayerModal.module.css';
-
-const GET_VIDEO_INFO = gql`
-  query VideoInfo($videoId: String!) {
-    video(videoId: $videoId) {
-      timestamp
-    }
-  }
-`;
+import * as gQuery from '../../../Global_Queries';
 
 function PlayerModal({ videoId, playerState }) {
   const navigate = useNavigate();
   const autoPlay = false;
   const [preview, setPreview] = useState(false);
 
-  const { loading, error, data } = useQuery(GET_VIDEO_INFO, {
+  const { loading, error, data } = useQuery(gQuery.GET_VIDEO_INFO, {
     variables: { videoId: videoId },
     fetchPolicy: 'network-only',
   });
