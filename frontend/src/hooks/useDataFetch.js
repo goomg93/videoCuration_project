@@ -13,7 +13,7 @@ const GET_LIST = gql`
   }
 `;
 
-const useInfiniteScroll = () => {
+const useDataFetch = () => {
   const index = 1;
   const limit = 10;
 
@@ -21,11 +21,10 @@ const useInfiniteScroll = () => {
     variables: { index: index, limit: limit },
   });
 
-  console.log('infinitescroll');
   if (loading) return loading;
   if (error) return error;
 
   return { loading, error, data, fetchMore };
 };
 
-export default useInfiniteScroll;
+export default useDataFetch;
