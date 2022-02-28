@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Layout from './pages/Layout/Layout';
 import List from './pages/List/List';
+import Main from './pages/Main/Main';
 import Detail from './pages/Detail/Detail';
 import DetailReact from './pages/DetailReact/DetailReact';
 import DetailLayer from './pages/DetailLayer/DetailLayer';
@@ -14,6 +15,7 @@ function Router() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<List />} />
+          <Route path="/main" element={<Main />} />
           <Route path="/:category" element={<SortList />} />
           <Route path="/video/:videoId" element={<Detail />} />
           <Route path="/react/:videoId" element={<DetailReact />} />

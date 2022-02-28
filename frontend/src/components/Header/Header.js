@@ -5,19 +5,22 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div>
-        <h1>
+        <h1 className={styles.logo}>
           <Link to="/">BZZNBYD</Link>
         </h1>
         <nav>
           <ul>
-            <li>
-              <Link to="/video/RYwmjinI14s">react-youtube</Link>
+            <li className={styles.navMenu}>
+              <Link to="/main">home</Link>
             </li>
-            <li>
-              <Link to="/react/RYwmjinI14s">react-player</Link>
+            <li className={styles.navMenu}>
+              <Link to="/video/s0sR8CA44eA">react-youtube</Link>
             </li>
-            <li>
-              <Link to="/player/RYwmjinI14s">using-layer</Link>
+            <li className={styles.navMenu}>
+              <Link to="/player/s0sR8CA44eA">using-layer</Link>
+            </li>
+            <li className={styles.navMenu}>
+              <Link to="/react/s0sR8CA44eA">react-player</Link>
             </li>
           </ul>
         </nav>

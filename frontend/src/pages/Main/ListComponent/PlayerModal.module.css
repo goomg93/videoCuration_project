@@ -1,0 +1,14 @@
+.PlayerModalArea {
+  position: absolute;
+  top: 0;
+  width: 384px;
+  height: 216px;
+  z-index: 1000;
+  transition: width 2s;
+}
+
+.CoverVideo {
+  position: absolute;
+  width: 384px;
+  height: 216px;
+}
