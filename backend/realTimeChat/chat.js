@@ -1,9 +1,11 @@
 import { formatMessage } from './utils/messages';
 import { userJoin, getCurrentUser, userLeave, getRoomUsers, getUsersId } from './utils/users';
 import { insertUesrInfo, insertMsg, deleteUserInfo } from '../mongodb/chatDataHandler';
+import redisAdapter from 'socket.io-redis';
 const botName = 'Chat Bot';
 
 const realTimeChat = io => {
+  io.adapter(redisAdapter({ host: 'redis', port: 6379 }));
   io.on('connection', socket => {
     socket.on('joinRoom', ({ username, room }) => {
       const user = userJoin(socket.id, username, room);
