@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import useDataFetch from '../../hooks/useDataFetch';
 import Thumbnail from './SubComponent/Thumbnail';
 import styles from './Sub.module.css';
@@ -7,15 +6,15 @@ import styles from './Sub.module.css';
 function Sub() {
   const { loading, error, data, fetchMore } = useDataFetch();
   const newIndex = useRef(0);
-  const [hasMore, setHasMore] = useState(true);
-  const params = useParams();
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     if (loading === false && data) {
-      console.log(data.videoPagination.length);
       newIndex.current = data.videoPagination.length + 1;
       if (data.videoPagination.length === data.videos.length) {
         setHasMore(false);
+      } else {
+        setHasMore(true);
       }
     }
   }, [data, loading]);
