@@ -43,10 +43,16 @@ const Header = () => {
               <Link to="/verticalscroll">scroll</Link>
             </li>
             <li className={styles.navMenu}>
+              <Link to="/playlist">playlist</Link>
+            </li>
+            <li className={styles.navMenu}>
               <Link to={`/video/${youtubeId}`}>react-youtube</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to={`/player/${youtubeId}`}>using-layer</Link>
+              <Link to={`/layer/${youtubeId}`}>using-layer</Link>
+            </li>
+            <li className={styles.navMenu}>
+              <Link to={`/chat/${youtubeId}`}>chat</Link>
             </li>
           </ul>
         </nav>
