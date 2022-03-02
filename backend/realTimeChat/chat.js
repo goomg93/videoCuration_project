@@ -1,6 +1,11 @@
 import { formatMessage } from './utils/messages';
 import { userJoin, getCurrentUser, userLeave, getRoomUsers, getUsersId } from './utils/users';
-import { insertUesrInfo, insertMsg, deleteUserInfo } from '../mongodb/chatDataHandler';
+import {
+  insertUesrInfo,
+  insertMsg,
+  deleteUserInfo,
+  getCurrentUserInfo,
+} from '../mongodb/chatDataHandler';
 import redisAdapter from 'socket.io-redis';
 const botName = 'Chat Bot';
 
@@ -17,7 +22,7 @@ const realTimeChat = io => {
         .emit('message', formatMessage(botName, `${user.username}님이 참가하셨습니다.`));
       io.to(user.room).emit('roomUsers', {
         room: user.room,
-        users: getRoomUsers(user.room),
+        users: getCurrentUserInfo(user.room),
       });
     });
 
@@ -36,7 +41,7 @@ const realTimeChat = io => {
         );
         io.to(user.room).emit('roomUsers', {
           room: user.room,
-          users: getRoomUsers(user.room),
+          users: getCurrentUserInfo(user.room),
         });
       }
       user && deleteUserInfo(user);

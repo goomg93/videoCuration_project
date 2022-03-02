@@ -54,6 +54,15 @@ const deleteUserInfo = async user => {
   }
 };
 
+const getCurrentUserInfo = async roomId => {
+  try {
+    const col = await db.collection('userInfo');
+    return col.find({});
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const insertMsg = async (msg, user) => {
   try {
     const col = await db.collection('message');
@@ -70,4 +79,4 @@ const insertMsg = async (msg, user) => {
   }
 };
 
-export { connect, insertUesrInfo, insertMsg, deleteUserInfo };
+export { connect, insertUesrInfo, insertMsg, deleteUserInfo, getCurrentUserInfo };
