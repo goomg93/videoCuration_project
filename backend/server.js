@@ -33,6 +33,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
         authentication(req); // 인증 모듈 콘텍스트 단계에서 처리
       },
       formatError, // 에러처리 미들웨어
+      debug: false,
     });
     connect();
     realTimeChat(io);
