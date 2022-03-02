@@ -4,11 +4,22 @@ import cache from '../cache/mkCache';
 
 const videoAllData = async () => {
   const redis = await connectRedisServer();
+  let dataParse;
+  if (!redis) {
+    dataParse = await cache.getApi();
+    cache.reprocessData(dataParse);
+  } else {
+    if (!(await redis.exists('data'))) {
+      await cache.makeCache();
+    }
+    const data = await redis.get('data');
+    dataParse = JSON.parse(data);
+  }
   if (!(await redis.exists('data'))) {
     await cache.makeCache();
   }
-  const data = await redis.get('data');
-  const dataParse = JSON.parse(data);
+  // const data = await redis.get('data');
+  // const dataParse = JSON.parse(data);
 
   const timestampSecond = Math.floor(+new Date() / 1000);
   let totalDurationSeconds = 0;
@@ -43,11 +54,22 @@ const videoAllData = async () => {
 
 const videoData = async () => {
   const redis = await connectRedisServer();
-  if (!(await redis.exists('data'))) {
-    await cache.makeCache();
+  let dataParse;
+  if (!redis) {
+    dataParse = await cache.getApi();
+    cache.reprocessData(dataParse);
+  } else {
+    if (!(await redis.exists('data'))) {
+      await cache.makeCache();
+    }
+    const data = await redis.get('data');
+    dataParse = JSON.parse(data);
   }
-  const data = await redis.get('data');
-  const dataParse = JSON.parse(data);
+  // if (!(await redis.exists('data'))) {
+  //   await cache.makeCache();
+  // }
+  // const data = await redis.get('data');
+  // const dataParse = JSON.parse(data);
 
   return dataParse;
 };
