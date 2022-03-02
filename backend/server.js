@@ -10,6 +10,8 @@ import socketIO from 'socket.io';
 import http from 'http';
 import realTimeChat from './realTimeChat/chat';
 import { connect } from './mongodb/chatDataHandler';
+import formatError from './middleware/formatError';
+import authentication from './middleware/auth';
 
 dotenv.config();
 
@@ -27,10 +29,10 @@ const startApolloServer = async (typeDefs, resolvers) => {
       },
       typeDefs,
       resolvers,
-      plugins: [httpHeadersPlugin],
       context: ({ req }) => {
-        return { setCookies: new Array(), setHeaders: new Array(), req };
+        authentication(req); // 인증 모듈 콘텍스트 단계에서 처리
       },
+      formatError, // 에러처리 미들웨어
     });
     connect();
     realTimeChat(io);
