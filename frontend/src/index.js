@@ -1,17 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from './Router';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Reset } from 'styled-reset';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+let domain =
+  window.location !== window.parent.location
+    ? document.referrer
+    : document.location.href;
+
+const httpLink = createHttpLink({
+  uri: 'https://www2.wecode.buzzntrend.com/graphql',
+  // uri: 'http://localhost:8000/graphql',
+});
+
+const authLink = setContext(() => {
+  return { headers: { authorization: 1234, domain: domain } };
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql',
-  cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          videoPagination: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Reset />
     <Router />
   </ApolloProvider>,
   document.getElementById('root')

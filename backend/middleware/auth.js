@@ -26,10 +26,7 @@ const authentication = context => {
   } else if (context.req.headers.authorization === process.env.API_KEY) {
     return;
   } else {
-    const err = new Error('INVALID ACCESS');
-    console.log('domain : ' + context.req.headers.domain);
-    console.log('origin : ' + context.req.headers.origin);
-    throw err;
+    throw new Error('INVALID ACCESS');
   }
 };
 
