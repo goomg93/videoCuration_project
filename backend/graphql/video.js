@@ -15,9 +15,9 @@ const videoAllData = async () => {
     const data = await redis.get('data');
     dataParse = JSON.parse(data);
   }
-  if (!(await redis.exists('data'))) {
-    await cache.makeCache();
-  }
+  // if (!(await redis.exists('data'))) {
+  //   await cache.makeCache();
+  // }
   // const data = await redis.get('data');
   // const dataParse = JSON.parse(data);
 
