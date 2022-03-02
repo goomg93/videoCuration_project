@@ -1,3 +1,4 @@
+import { UserInputError } from 'apollo-server-express';
 import connectRedisServer from '../cache/redis';
 import cache from '../cache/mkCache';
 
@@ -55,7 +56,7 @@ const getVideoDataById = (data, id) => {
   [data] = data.filter(video => video.id === id);
 
   if (data === undefined) {
-    throw new Error('invalid id');
+    throw new UserInputError('Invalid id');
   }
 
   return data;
@@ -65,7 +66,7 @@ const getVideoDataByVideoId = (data, videoId) => {
   [data] = data.filter(video => video.videoId === videoId);
 
   if (data === undefined) {
-    throw new Error('invalid videoId');
+    throw new UserInputError('Invalid videoId');
   }
 
   return data;

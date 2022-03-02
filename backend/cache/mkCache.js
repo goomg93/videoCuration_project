@@ -50,4 +50,4 @@ const getApi = async () => {
   return data.data;
 };
 
-export default { cacheSchedule, makeCache, getApi };
+export default { cacheSchedule, makeCache, getApi, reprocessData };

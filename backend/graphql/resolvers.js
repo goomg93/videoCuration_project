@@ -1,5 +1,5 @@
 import video from './video';
-import authentication from '../middleware/auth';
+import { UserInputError } from 'apollo-server-express';
 
 const resolvers = {
   Query: {
@@ -11,7 +11,7 @@ const resolvers = {
       } else if (videoId === undefined) {
         return await video.getVideoDataById(data, id);
       } else {
-        throw new Error('not input');
+        throw new UserInputError('Not Input');
       }
     },
     videoPagination: async (_, { index, limit }, context) => {
