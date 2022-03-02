@@ -29,8 +29,9 @@ const startApolloServer = async (typeDefs, resolvers) => {
       },
       typeDefs,
       resolvers,
-      context: ({ req }) => {
-        authentication(req); // 인증 모듈 콘텍스트 단계에서 처리
+      context: async ({ req }) => {
+        const LIST_ID = await authentication(req); // 인증 모듈 콘텍스트 단계에서 처리
+        return { LIST_ID };
       },
       formatError, // 에러처리 미들웨어
       debug: false,

@@ -3,9 +3,9 @@ import { UserInputError } from 'apollo-server-express';
 
 const resolvers = {
   Query: {
-    videos: async () => await video.videoAllData(),
+    videos: async (_, arg, context) => await video.videoAllData(context),
     video: async (_, { id, videoId }, context) => {
-      let data = await video.videoData();
+      let data = await video.videoData(context);
       if (id === undefined) {
         return video.getVideoDataByVideoId(data, videoId);
       } else if (videoId === undefined) {

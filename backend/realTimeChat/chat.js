@@ -5,7 +5,7 @@ import redisAdapter from 'socket.io-redis';
 const botName = 'Chat Bot';
 
 const realTimeChat = io => {
-  io.adapter(redisAdapter({ host: 'redis', port: 6379 }));
+  // io.adapter(redisAdapter({ host: 'redis', port: 6379 }));
   io.on('connection', socket => {
     socket.on('joinRoom', ({ username, room }) => {
       const user = userJoin(socket.id, username, room);

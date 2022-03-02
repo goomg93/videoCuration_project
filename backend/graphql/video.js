@@ -2,11 +2,11 @@ import { UserInputError } from 'apollo-server-express';
 import connectRedisServer from '../cache/redis';
 import cache from '../cache/mkCache';
 
-const videoAllData = async () => {
+const videoAllData = async context => {
   const redis = await connectRedisServer();
   let dataParse;
   if (!redis) {
-    dataParse = await cache.getApi();
+    dataParse = await cache.getApi(context);
     cache.reprocessData(dataParse);
   } else {
     if (!(await redis.exists('data'))) {
@@ -52,11 +52,11 @@ const videoAllData = async () => {
   return dataParse;
 };
 
-const videoData = async () => {
+const videoData = async context => {
   const redis = await connectRedisServer();
   let dataParse;
   if (!redis) {
-    dataParse = await cache.getApi();
+    dataParse = await cache.getApi(context);
     cache.reprocessData(dataParse);
   } else {
     if (!(await redis.exists('data'))) {
