@@ -1,13 +1,20 @@
+import { UserInputError } from 'apollo-server-express';
 import connectRedisServer from '../cache/redis';
 import cache from '../cache/mkCache';
 
-const videoAllData = async () => {
+const videoAllData = async context => {
   const redis = await connectRedisServer();
-  if (!(await redis.exists('data'))) {
-    await cache.makeCache();
+  let dataParse;
+  if (!redis) {
+    dataParse = await cache.getApi(context);
+    cache.reprocessData(dataParse);
+  } else {
+    if (!(await redis.exists('data'))) {
+      await cache.makeCache();
+    }
+    const data = await redis.get('data');
+    dataParse = JSON.parse(data);
   }
-  const data = await redis.get('data');
-  const dataParse = JSON.parse(data);
 
   const timestampSecond = Math.floor(+new Date() / 1000);
   let totalDurationSeconds = 0;
@@ -40,22 +47,11 @@ const videoAllData = async () => {
   return dataParse;
 };
 
-const videoData = async () => {
-  const redis = await connectRedisServer();
-  if (!(await redis.exists('data'))) {
-    await cache.makeCache();
-  }
-  const data = await redis.get('data');
-  const dataParse = JSON.parse(data);
-
-  return dataParse;
-};
-
 const getVideoDataById = (data, id) => {
   [data] = data.filter(video => video.id === id);
 
   if (data === undefined) {
-    throw new Error('invalid id');
+    throw new UserInputError('Invalid id');
   }
 
   return data;
@@ -65,7 +61,7 @@ const getVideoDataByVideoId = (data, videoId) => {
   [data] = data.filter(video => video.videoId === videoId);
 
   if (data === undefined) {
-    throw new Error('invalid videoId');
+    throw new UserInputError('Invalid videoId');
   }
 
   return data;
@@ -87,5 +83,4 @@ export default {
   getVideoDataByVideoId,
   videoPagination,
   videoFilterByCategory,
-  videoData,
 };

@@ -9,7 +9,9 @@ import cors from 'cors';
 import socketIO from 'socket.io';
 import http from 'http';
 import realTimeChat from './realTimeChat/chat';
-import { connect } from './mongodb/chatDataHandler';
+import { dbConnect } from './mongodb/chatDataHandler';
+import formatError from './middleware/formatError';
+import authentication from './middleware/auth';
 
 dotenv.config();
 
@@ -27,12 +29,14 @@ const startApolloServer = async (typeDefs, resolvers) => {
       },
       typeDefs,
       resolvers,
-      plugins: [httpHeadersPlugin],
-      context: ({ req }) => {
-        return { setCookies: new Array(), setHeaders: new Array(), req };
+      context: async ({ req }) => {
+        const LIST_ID = await authentication(req); // 인증 모듈 콘텍스트 단계에서 처리
+        return { LIST_ID };
       },
+      formatError, // 에러처리 미들웨어
+      debug: false,
     });
-    connect();
+    dbConnect();
     realTimeChat(io);
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
