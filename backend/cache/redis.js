@@ -1,15 +1,21 @@
 const redis = require('redis');
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const connectRedisServer = async () => {
-  const client = redis.createClient();
+  try {
+    const client = redis.createClient({
+      url: process.env.CONNECT_REDIS_URL_1 | process.env.CONNECT_REDIS_URL_2,
+    });
 
-  client.on('error', () => {
-    throw new Error('connected error');
-  });
+    await client.connect();
 
-  await client.connect();
-
-  return client;
+    return client;
+  } catch (err) {
+    console.log('--- redis-server disconnect ---');
+    return false;
+  }
 };
 
 export default connectRedisServer;
