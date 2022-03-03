@@ -6,8 +6,8 @@ dotenv.config();
 const typeDefs = gql`
   type Query {
     videos: [Video]!
-    video(id: Int, videoId: String): Video!
-    videoPagination(index: Int!, limit: Int!, isNow: Boolean): [Video]
+    video(id: Int, videoId: String, isNow: Boolean): Video!
+    videoPagination(index: Int!, limit: Int!): [Video]
     videoFilterByCategory(category: String!): [Video]
   }
 
