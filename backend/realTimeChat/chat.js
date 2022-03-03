@@ -31,7 +31,7 @@ const realTimeChat = io => {
         .emit('message', formatMessage(botName, `${user.username}님이 참가하셨습니다.`));
       io.to(user.room).emit('roomUsers', {
         room: user.room,
-        users: await getCurrentUserInfo(),
+        users: getCurrentUserInfo(),
       });
     });
 

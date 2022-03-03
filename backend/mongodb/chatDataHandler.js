@@ -68,6 +68,7 @@ const getCurrentUserInfo = async () => {
   try {
     const col = await db.collection('userInfo');
     const users = await col.find({}, { name: 1, user_id: 0 }).toArray();
+    console.log(users);
     return users;
   } catch (e) {
     console.error(e);
