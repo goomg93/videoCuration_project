@@ -55,6 +55,15 @@ const deleteUserInfo = async user => {
   }
 };
 
+const findUserInfo = async id => {
+  try {
+    const user = await db.collection('userInfo').findOne({ user_id: id });
+    return user;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const getCurrentUserInfo = async () => {
   try {
     const col = await db.collection('userInfo');
@@ -81,4 +90,4 @@ const insertMsg = async (msg, user) => {
   }
 };
 
-export { dbConnect, insertUserInfo, insertMsg, deleteUserInfo, getCurrentUserInfo };
+export { dbConnect, insertUserInfo, insertMsg, deleteUserInfo, getCurrentUserInfo, findUserInfo };

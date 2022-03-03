@@ -1,3 +1,5 @@
+import { findUserInfo } from '../../mongodb/chatDataHandler';
+
 const users = [];
 
 const userJoin = (id, username, room) => {
@@ -12,7 +14,7 @@ const getUsersId = username => {
   }
 };
 
-const getCurrentUser = id => {
+const getCurrentUser = async id => {
   return users.find(user => user.id === id);
 };
 
