@@ -9,7 +9,7 @@ const uri = process.env.mongodb_atlas_uri;
 export const client = new MongoClient(uri);
 let db;
 
-const connect = async () => {
+const dbConnect = async () => {
   try {
     await client.connect();
     if (process.env.NODE_ENV !== 'production') console.log('connected');
@@ -18,7 +18,7 @@ const connect = async () => {
   }
 };
 
-const insertUesrInfo = async user => {
+const insertUserInfo = async user => {
   try {
     db = await client.db(`room_${user.room}`);
     const list = await db.listCollections().toArray();
@@ -54,10 +54,11 @@ const deleteUserInfo = async user => {
   }
 };
 
-const getCurrentUserInfo = async roomId => {
+const getCurrentUserInfo = async () => {
   try {
     const col = await db.collection('userInfo');
-    return col.find({});
+    const users = await col.find({}, { name: 1, user_id: 0 }).toArray();
+    return users;
   } catch (e) {
     console.error(e);
   }
@@ -79,4 +80,4 @@ const insertMsg = async (msg, user) => {
   }
 };
 
-export { connect, insertUesrInfo, insertMsg, deleteUserInfo, getCurrentUserInfo };
+export { dbConnect, insertUserInfo, insertMsg, deleteUserInfo, getCurrentUserInfo };

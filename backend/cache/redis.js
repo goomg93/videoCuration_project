@@ -6,10 +6,6 @@ const connectRedisServer = async () => {
       url: 'redis://@redis:6379',
     });
 
-    // client.on('error', () => {
-    //   throw new Error('connected error');
-    // });
-
     await client.connect();
 
     return client;

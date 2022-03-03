@@ -15,11 +15,6 @@ const videoAllData = async context => {
     const data = await redis.get('data');
     dataParse = JSON.parse(data);
   }
-  // if (!(await redis.exists('data'))) {
-  //   await cache.makeCache();
-  // }
-  // const data = await redis.get('data');
-  // const dataParse = JSON.parse(data);
 
   const timestampSecond = Math.floor(+new Date() / 1000);
   let totalDurationSeconds = 0;
@@ -48,28 +43,6 @@ const videoAllData = async context => {
     }
     previousValue = totalTimestamp - currentOverlapValue;
   }
-
-  return dataParse;
-};
-
-const videoData = async context => {
-  const redis = await connectRedisServer();
-  let dataParse;
-  if (!redis) {
-    dataParse = await cache.getApi(context);
-    cache.reprocessData(dataParse);
-  } else {
-    if (!(await redis.exists('data'))) {
-      await cache.makeCache();
-    }
-    const data = await redis.get('data');
-    dataParse = JSON.parse(data);
-  }
-  // if (!(await redis.exists('data'))) {
-  //   await cache.makeCache();
-  // }
-  // const data = await redis.get('data');
-  // const dataParse = JSON.parse(data);
 
   return dataParse;
 };
@@ -110,5 +83,4 @@ export default {
   getVideoDataByVideoId,
   videoPagination,
   videoFilterByCategory,
-  videoData,
 };

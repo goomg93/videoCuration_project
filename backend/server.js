@@ -9,7 +9,7 @@ import cors from 'cors';
 import socketIO from 'socket.io';
 import http from 'http';
 import realTimeChat from './realTimeChat/chat';
-import { connect } from './mongodb/chatDataHandler';
+import { dbConnect } from './mongodb/chatDataHandler';
 import formatError from './middleware/formatError';
 import authentication from './middleware/auth';
 
@@ -36,7 +36,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
       formatError, // 에러처리 미들웨어
       debug: false,
     });
-    connect();
+    dbConnect();
     realTimeChat(io);
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
