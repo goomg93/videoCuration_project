@@ -7,7 +7,6 @@ import Sub from './pages/ListVertical/Sub';
 import DetailLive from './pages/DetailLive/DetailLive';
 import Detail from './pages/Detail/Detail';
 import SortList from './pages/List/ListComponent/SortList';
-import LiveChat from './components/LiveChat/LiveChat';
 
 function Router() {
   return (
@@ -19,7 +18,6 @@ function Router() {
           <Route path="/:category" element={<SortList />} />
           <Route path="/playlist" element={<DetailLive />} />
           <Route path="/:type/:videoId" element={<Detail />} />
-          <Route path="/chat/:videoId" element={<LiveChat />} />
         </Route>
       </Routes>
     </BrowserRouter>

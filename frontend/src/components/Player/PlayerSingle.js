@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import YouTube from 'react-youtube';
 import styles from './Player.module.css';
 

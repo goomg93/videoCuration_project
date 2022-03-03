@@ -1,0 +1,101 @@
+.LiveChat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  max-width: 700px;
+  min-width: 500px;
+  height: 100%;
+  border: 1px solid gray;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: #fff;
+}
+
+/* //대화내용 */
+.chatContentContainer {
+  width: 100%;
+  overflow: hidden;
+}
+
+.chatTitlebar {
+  padding: 20px;
+  border-bottom: 1px solid gray;
+}
+
+.chatMessages {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100%;
+  max-height: inherit;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.chatMessages::-webkit-scrollbar {
+  display: none;
+}
+
+.chatMessages .message {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-wrap: break-word;
+}
+
+.chatMessages .text {
+  border-radius: 50px;
+  padding: 5px 15px;
+  color: black;
+}
+
+#you {
+  justify-self: flex-end;
+  background-color: rgba(178, 94, 223, 100);
+}
+.chatMessages .message .meta {
+  display: none;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+.chatMessages .message:hover .meta {
+  display: block;
+}
+
+/* //채팅입력 */
+.chatFormContainer {
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border: 1px solid gray;
+  border-radius: 50px;
+  align-self: center;
+}
+
+.chatFormContainer form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chatFormContainer input[type='text'] {
+  font-size: 16px;
+  padding: 0px 5px 0px 10px;
+  height: 40px;
+  flex: 1;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+.chatBtn {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 0;
+  font-size: 17px;
+  background-color: transparent;
+}
