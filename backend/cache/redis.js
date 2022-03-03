@@ -6,7 +6,7 @@ dotenv.config();
 const connectRedisServer = async () => {
   try {
     const client = redis.createClient({
-      url: process.env.CONNECT_REDIS_URL_1 | process.env.CONNECT_REDIS_URL_2,
+      url: process.env.CONNECT_REDIS_URL_1,
     });
 
     await client.connect();

@@ -20,7 +20,7 @@ const dbConnect = async () => {
 
 const insertUserInfo = async user => {
   try {
-    db = await client.db(`room_${user.room}`);
+    db = client.db(`room_${user.room}`);
     const list = await db.listCollections().toArray();
     let isExsist = false;
     for (let el of list) {
@@ -37,10 +37,9 @@ const insertUserInfo = async user => {
     const userInfo = {
       user_id: user.id,
       username: user.username,
-      room: user.room,
     };
 
-    col.insertOne(userInfo);
+    await col.insertOne(userInfo);
   } catch (e) {
     console.error(e);
   }
@@ -48,27 +47,17 @@ const insertUserInfo = async user => {
 
 const deleteUserInfo = async user => {
   try {
-    const col = await db.collection('userInfo');
-    col.findOneAndDelete({ user_id: user.id });
+    db = client.db(`room_${user.room}`);
+    await db.collection('userInfo').findOneAndDelete({ user_id: user.id });
   } catch (e) {
     console.error(e);
   }
 };
 
-const findUserInfo = async id => {
+const getCurrentUserInfo = async user => {
   try {
-    const user = await db.collection('userInfo').findOne({ user_id: id });
-    return user;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const getCurrentUserInfo = async () => {
-  try {
-    const col = await db.collection('userInfo');
-    const users = await col.find({}, { name: 1, user_id: 0 }).toArray();
-    console.log(users);
+    db = client.db(`room_${user.room}`);
+    const users = await db.collection('userInfo').find({}, { name: 1, user_id: 0 }).toArray();
     return users;
   } catch (e) {
     console.error(e);
@@ -77,18 +66,19 @@ const getCurrentUserInfo = async () => {
 
 const insertMsg = async (msg, user) => {
   try {
+    db = client.db(`room_${user.room}`);
     const col = await db.collection('message');
     const message = {
       _id: await getNextSequenceValue('id', user.room),
       user_id: user.id,
-      name: user.username,
+      username: user.username,
       createdAt: new Date().toISOString(),
       message: msg,
     };
-    col.insertOne(message);
+    await col.insertOne(message);
   } catch (e) {
     console.error(e);
   }
 };
 
-export { dbConnect, insertUserInfo, insertMsg, deleteUserInfo, getCurrentUserInfo, findUserInfo };
+export { dbConnect, insertUserInfo, insertMsg, deleteUserInfo, getCurrentUserInfo };
