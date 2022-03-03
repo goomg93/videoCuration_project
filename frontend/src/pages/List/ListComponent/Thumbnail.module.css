@@ -1,19 +1,21 @@
 .ThumbnailArea {
-  width: 384px;
-  height: 216px;
-  position: relative;
-  margin: 30px 30px;
-  z-index: 800;
+  padding: 2% 0 2% 2%;
 }
 
 .ThumbnailContainer {
-  width: 50%;
-  margin: 0 auto;
+  position: relative;
+  margin: 6% auto;
+  background-color: black;
 }
 
 .Thumbnails {
-  width: 384px;
-  height: 216px;
+  width: 288px;
+  height: 162px;
   cursor: pointer;
-  box-shadow: 0 10px 20px gray;
+  /* box-shadow: 0 10px 20px gray; */
+}
+
+p {
+  /* max-height: 30px; */
+  /* overflow: hidden; */
 }
