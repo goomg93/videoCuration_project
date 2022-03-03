@@ -36,7 +36,8 @@ const insertUserInfo = async user => {
     const col = db.collection('userInfo');
     const userInfo = {
       user_id: user.id,
-      name: user.username,
+      username: user.username,
+      room: user.room,
     };
 
     col.insertOne(userInfo);

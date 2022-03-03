@@ -14,12 +14,12 @@ dotenv.config();
 const botName = 'Chat Bot';
 
 const realTimeChat = io => {
-  io.adapter(
-    redisAdapter({
-      host: process.env.CONNECT_REDIS_ADAPTER_1 | process.env.CONNECT_REDIS_ADAPTER_2,
-      port: process.env.CONNECT_REDIS_ADAPTER_PORT,
-    })
-  );
+  // io.adapter(
+  //   redisAdapter({
+  //     host: process.env.CONNECT_REDIS_ADAPTER_1 | process.env.CONNECT_REDIS_ADAPTER_2,
+  //     port: process.env.CONNECT_REDIS_ADAPTER_PORT,
+  //   })
+  // );
   io.on('connection', socket => {
     socket.on('joinRoom', async ({ username, room }) => {
       const user = userJoin(socket.id, username, room);
