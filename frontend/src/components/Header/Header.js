@@ -40,19 +40,10 @@ const Header = () => {
               <Link to="/">home</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to="/verticalscroll">scroll</Link>
+              <Link to="/verticalscroll">infinite-scroll</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to="/playlist">playlist</Link>
-            </li>
-            <li className={styles.navMenu}>
-              <Link to={`/video/${youtubeId}`}>react-youtube</Link>
-            </li>
-            <li className={styles.navMenu}>
-              <Link to={`/layer/${youtubeId}`}>using-layer</Link>
-            </li>
-            <li className={styles.navMenu}>
-              <Link to={`/chat/${youtubeId}`}>chat</Link>
+              <Link to="/video/playlist">live-now</Link>
             </li>
           </ul>
         </nav>

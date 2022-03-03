@@ -13,7 +13,7 @@ const GET_LIST = gql`
   }
 `;
 
-const useDataFetch = () => {
+const useVideoPagination = () => {
   const index = 1;
   const limit = 10;
 
@@ -27,4 +27,4 @@ const useDataFetch = () => {
   return { loading, error, data, fetchMore };
 };
 
-export default useDataFetch;
+export default useVideoPagination;

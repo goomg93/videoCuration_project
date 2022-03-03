@@ -1,34 +1,40 @@
 .playerContainer {
   position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-width: 480px;
+  height: auto;
 }
 
 .youtubeWrapper {
   position: relative;
   aspect-ratio: 16 / 9;
-  max-width: 900px;
   width: 100%;
-  height: 100%;
-  box-shadow: 0px 15px 20px gray;
+  min-width: 480px;
+  height: auto;
 }
 
 .youtube {
   position: absolute;
   aspect-ratio: 16 / 9;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
+  min-width: 480px;
   height: 100%;
 }
 
 .playerClickArea {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 900px;
+  left: 0;
+  aspect-ratio: 16 / 9;
+  min-width: 480px;
   z-index: 99;
   width: 100%;
-  height: 100%;
+  height: auto;
   cursor: pointer;
 }
 

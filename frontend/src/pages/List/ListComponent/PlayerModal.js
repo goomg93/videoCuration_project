@@ -57,7 +57,7 @@ function PlayerModal({ videoId, playerState }) {
   }
 
   const goToDetail = videoId => {
-    navigate(`/video/${videoId}`);
+    navigate('/video/playlist');
   };
 
   return (
@@ -66,7 +66,7 @@ function PlayerModal({ videoId, playerState }) {
         <section
           className={styles.CoverVideo}
           onClick={() => goToDetail(videoId)}
-        ></section>
+        />
       ) : (
         <section className={styles.BlockVideo}>
           <p>현재 페이지에서 재생할 수 없는 영상입니다.</p>
