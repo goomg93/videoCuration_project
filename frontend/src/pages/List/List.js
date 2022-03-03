@@ -1,69 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import Thumbnail from './ListComponent/Thumbnail';
 import styles from './List.module.css';
 import * as gQuery from '../../Global_Queries';
-
-// function List() {
-//   const GET_LIST = gql`
-//     query GetList {
-//       videos {
-//         videoId
-//         title
-//         thumbnails
-//         category
-//         description
-//       }
-//     }
-//   `;
-
-//   const { loading, error, data } = useQuery(GET_LIST);
-//   if (loading) return <p>Loading....</p>;
-//   if (error) {
-//     console.log(error);
-//     return <p>Error To Render</p>;
-//   }
-
-//   return (
-//     <section className={styles.ListArea}>
-//       <section className={styles.ThumbnailList}>
-//         {data?.videos.map((data, index) => (
-//           <Thumbnail
-//             // title={data.title}
-//             thumbnails={data.thumbnails}
-//             videoId={data.videoId}
-//             key={index}
-//           />
-//         ))}
-//       </section>
-//     </section>
-//   );
-// }
+import { useDispatch, useSelector } from 'react-redux';
 
 function List() {
-  const [index, setIndex] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [list, setList] = useState('');
+  const scrollRef = useRef();
+  const dispatch = useDispatch();
 
-  const { loading, error, data } = useQuery(gQuery.GET_LIST_PAGINATION, {
-    variables: { limit: parseInt(limit), index: parseInt(index) },
-  });
+  // state 정의
+  const index = useSelector(state => state.ListStates.index);
+  const limit = useSelector(state => state.ListStates.limit);
 
-  if (loading) <p>Loading....</p>;
-  if (error) <p>Error To Render....</p>;
+  const { loading, error, data, fetchMore } = useQuery(
+    gQuery.GET_LIST_PAGINATION,
+    {
+      variables: { limit: parseInt(limit), index: parseInt(index) },
+    }
+  );
+
+  if (loading) return <p>Loading....</p>;
+  if (error) return <p>Error To Render....</p>;
+
+  const onDragStart = e => {
+    console.log('pageX :', e.pageX);
+    console.log('scrollRef :', scrollRef);
+  };
+
+  const addData = () => {
+    fetchMore({ variables: { index: index + 10, limit: limit } });
+    dispatch({ type: 'List/setIndex' });
+  };
 
   return (
-    <section className={styles.listArea}>
-      <section className={styles.widthPagination}>
-        {data?.videoPagination.map((data, index) => (
-          <Thumbnail
-            // title={data.title}
-            thumbnails={data.thumbnails}
-            videoId={data.videoId}
-            key={index}
-          />
-        ))}
+    <section className={styles.listBody}>
+      <section className={styles.listArea} onMouseDown={onDragStart}>
+        <section className={styles.lists}>
+          {data?.videoPagination.map((data, index) => (
+            <Thumbnail
+              title={data.title}
+              thumbnails={data.thumbnails}
+              videoId={data.videoId}
+              key={index}
+            />
+          ))}
+        </section>
       </section>
+      <button onClick={addData}>데이터 추가</button>
     </section>
   );
 }

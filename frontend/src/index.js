@@ -8,6 +8,9 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reduxModules';
 
 let domain =
   window.location !== window.parent.location
@@ -40,9 +43,13 @@ const client = new ApolloClient({
   }),
 });
 
+const store = createStore(allReducers);
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </ApolloProvider>,
   document.getElementById('root')
 );

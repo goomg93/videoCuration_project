@@ -6,7 +6,7 @@ export const GET_LIST_PAGINATION = gql`
       id
       videoId
       thumbnails
-      category
+      title
     }
   }
 `;
@@ -26,7 +26,18 @@ export const GET_LIST = gql`
 export const GET_VIDEO_INFO = gql`
   query VideoInfo($videoId: String!) {
     video(videoId: $videoId) {
-      timestamp
+      listTimestamp
+    }
+  }
+`;
+
+export const GET_SORT_LIST = gql`
+  query GetList($category: String!) {
+    videoFilterByCategory(category: $category) {
+      videoId
+      thumbnails
+      category
+      title
     }
   }
 `;
