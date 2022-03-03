@@ -49,26 +49,40 @@ const videoAllData = async context => {
 
 const getVideoDataById = (data, id) => {
   [data] = data.filter(video => video.id === id);
-
   if (data === undefined) {
     throw new UserInputError('Invalid id');
   }
-
   return data;
 };
 
 const getVideoDataByVideoId = (data, videoId) => {
   [data] = data.filter(video => video.videoId === videoId);
-
   if (data === undefined) {
     throw new UserInputError('Invalid videoId');
   }
+  return data;
+};
 
+const getVideoDataByIsNow = (data, isNow) => {
+  [data] = data.filter(video => video.isNow === isNow);
+  if (data === undefined) {
+    throw new Error('isNow error');
+  }
   return data;
 };
 
 const videoPagination = (index, limit, data) => {
-  let listData = data.splice(index - 1, limit);
+  let listData = [];
+  let [tmp] = data.filter(video => video.isNow === true);
+
+  data.unshift(tmp);
+
+  if (index === 1) {
+    listData = data.splice(index - 1, limit + 1);
+  } else {
+    listData = data.splice(index, limit);
+  }
+
   return listData;
 };
 
@@ -83,4 +97,5 @@ export default {
   getVideoDataByVideoId,
   videoPagination,
   videoFilterByCategory,
+  getVideoDataByIsNow,
 };

@@ -7,7 +7,7 @@ const typeDefs = gql`
   type Query {
     videos: [Video]!
     video(id: Int, videoId: String): Video!
-    videoPagination(index: Int!, limit: Int!): [Video]
+    videoPagination(index: Int!, limit: Int!, isNow: Boolean): [Video]
     videoFilterByCategory(category: String!): [Video]
   }
 
