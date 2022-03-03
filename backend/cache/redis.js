@@ -1,9 +1,12 @@
 const redis = require('redis');
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const connectRedisServer = async () => {
   try {
     const client = redis.createClient({
-      url: 'redis://@redis:6379',
+      url: process.env.CONNECT_REDIS_URL_1 | process.env.CONNECT_REDIS_URL_2,
     });
 
     await client.connect();
