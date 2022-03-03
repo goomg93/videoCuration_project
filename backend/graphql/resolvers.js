@@ -6,12 +6,14 @@ const resolvers = {
     videos: async (_, arg, context) => await video.videoAllData(context),
     video: async (_, { id, videoId }, context) => {
       let data = await video.videoAllData(context);
-      if (id === undefined) {
-        return video.getVideoDataByVideoId(data, videoId);
-      } else if (videoId === undefined) {
+      if (!!id) {
         return await video.getVideoDataById(data, id);
+      } else if (!!videoId) {
+        return video.getVideoDataByVideoId(data, videoId);
+      } else if (isNow) {
+        return video.getVideoDataByIsNow(data, isNow);
       } else {
-        throw new UserInputError('Not Input');
+        throw new UserInputError('not input');
       }
     },
     videoPagination: async (_, { index, limit }, context) => {
