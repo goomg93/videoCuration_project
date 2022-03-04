@@ -13,3 +13,10 @@
   margin: auto;
   overflow-x: scroll;
 }
+
+.refSection {
+  padding: 2% 0 2% 2%;
+}
+/* .lists::-webkit-scrollbar {
+  display: none;
+} */
