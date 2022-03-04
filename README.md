@@ -29,8 +29,8 @@
 
 ### 2.3. .env 세팅
 
-REACT_APP_SERVER_HOST="http://localhost:8000"
-REACT_APP_CLIENT_HOST="http://localhost:3000"
+REACT_APP_EC2_SERVER=""
+REACT_APP_LOCAL_SERVER=""
 
 ### 2.4. 공통 convention
 

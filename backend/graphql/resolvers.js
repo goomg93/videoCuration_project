@@ -1,28 +1,27 @@
 import video from './video';
-import authentication from '../middleware/auth';
+import { UserInputError } from 'apollo-server-express';
 
 const resolvers = {
   Query: {
-    videos: async () => await video.videoAllData(),
-    video: async (_, { id, videoId }, context) => {
-      authentication(context);
-      let data = await video.videoData();
-      if (id === undefined) {
-        return video.getVideoDataByVideoId(data, videoId);
-      } else if (videoId === undefined) {
+    videos: async (_, arg, context) => await video.videoAllData(context),
+    video: async (_, { id, videoId, isNow }, context) => {
+      let data = await video.videoAllData(context);
+      if (!!id) {
         return await video.getVideoDataById(data, id);
+      } else if (!!videoId) {
+        return video.getVideoDataByVideoId(data, videoId);
+      } else if (isNow) {
+        return video.getVideoDataByIsNow(data, isNow);
       } else {
-        throw new Error('not input');
+        throw new UserInputError('not input');
       }
     },
     videoPagination: async (_, { index, limit }, context) => {
-      authentication(context);
-      let data = await video.videoData();
+      let data = await video.videoAllData();
       return video.videoPagination(index, limit, data);
     },
     videoFilterByCategory: async (_, { category }, context) => {
-      authentication(context);
-      let data = await video.videoData();
+      let data = await video.videoAllData();
       return video.videoFilterByCategory(category, data);
     },
   },

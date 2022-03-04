@@ -1,10 +1,22 @@
-.ListArea {
+.listBody {
   width: 100%;
 }
 
-.ThumbnailList {
-  display: flex;
-  flex-wrap: wrap;
-  width: 80%;
-  margin: 0 auto;
+.listArea {
+  width: 100%;
+  height: 250px;
 }
+
+.lists {
+  width: 90%;
+  display: flex;
+  margin: auto;
+  overflow-x: scroll;
+}
+
+.refSection {
+  padding: 2% 0 2% 2%;
+}
+/* .lists::-webkit-scrollbar {
+  display: none;
+} */

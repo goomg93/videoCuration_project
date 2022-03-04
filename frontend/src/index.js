@@ -8,6 +8,9 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reduxModules';
 
 let domain =
   window.location !== window.parent.location
@@ -15,12 +18,11 @@ let domain =
     : document.location.href;
 
 const httpLink = createHttpLink({
-  uri: 'https://www2.wecode.buzzntrend.com/graphql',
-  // uri: 'http://localhost:8000/graphql',
+  uri: `${process.env.REACT_APP_EC2_SERVER}`,
 });
 
 const authLink = setContext(() => {
-  return { headers: { authorization: 1234, domain: domain, name: 'eunbi' } };
+  return { headers: { authorization: 1234, domain: domain } };
 });
 
 const client = new ApolloClient({
@@ -41,9 +43,13 @@ const client = new ApolloClient({
   }),
 });
 
+const store = createStore(allReducers);
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </ApolloProvider>,
   document.getElementById('root')
 );
