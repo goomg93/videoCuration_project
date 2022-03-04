@@ -49,7 +49,8 @@ function PlayerModal({ videoId, playerHandler }) {
   }
 
   const goToDetail = videoId => {
-    navigate(`/video/${videoId}`);
+    if (data.video.listTimestamp > 0) return navigate(`/video/playlist`);
+    else return navigate(`/video/youtube/${videoId}`);
   };
 
   return (
