@@ -1,5 +1,4 @@
 import { ApolloServer } from 'apollo-server-express';
-import httpHeadersPlugin from 'apollo-server-plugin-http-headers';
 import express from 'express';
 import cache from './cache/mkCache';
 import typeDefs from './graphql/typeDefs';
@@ -12,6 +11,7 @@ import realTimeChat from './realTimeChat/chat';
 import { dbConnect } from './mongodb/chatDataHandler';
 import formatError from './middleware/formatError';
 import authentication from './middleware/auth';
+import routes from './healthyCheck';
 
 dotenv.config();
 
@@ -23,6 +23,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     const expressServer = http.createServer(app);
     const io = socketIO(expressServer, { cors: { origin: '*' } });
     app.use(cors());
+    app.use(routes);
     const apolloServer = new ApolloServer({
       cors: {
         origin: '*',
