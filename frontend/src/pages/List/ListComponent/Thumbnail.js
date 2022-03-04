@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import PlayerModal from './PlayerModal';
 import styles from './Thumbnail.module.css';
 
-function Thumbnail({ title, thumbnails, videoId, ref }) {
-  const dispatch = useDispatch();
-
+function Thumbnail({ title, thumbnails, videoId }) {
   const [player, setPlayer] = useState(false);
 
   const playerHandler = () => {

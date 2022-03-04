@@ -1,5 +1,4 @@
 const SET_PREVIEW = 'PlayerModal/setPreview';
-const SET_DATA_LIST = 'List/setDataList';
 const SET_INDEX = 'List/setIndex';
 const SET_PAGINATION = 'List/setPagination';
 
@@ -18,12 +17,6 @@ export default function reducer(state = listStates, action) {
         player: !state.preview,
       };
 
-    case SET_DATA_LIST:
-      return {
-        ...state,
-        listData: state.listData.concat(action.data?.videoPagination),
-      };
-
     case SET_INDEX:
       return {
         ...state,
@@ -33,8 +26,9 @@ export default function reducer(state = listStates, action) {
     case SET_PAGINATION:
       return {
         ...state,
-        pagination: action.setPagination,
+        pagination: action.payload,
       };
+
     default:
       return state;
   }
