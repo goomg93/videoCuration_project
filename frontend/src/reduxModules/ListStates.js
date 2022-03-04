@@ -1,12 +1,13 @@
 const SET_PREVIEW = 'PlayerModal/setPreview';
 const SET_DATA_LIST = 'List/setDataList';
 const SET_INDEX = 'List/setIndex';
+const SET_PAGINATION = 'List/setPagination';
 
 const listStates = {
   index: 1,
   limit: 10,
   preview: true,
-  listData: [],
+  pagination: false,
 };
 
 export default function reducer(state = listStates, action) {
@@ -29,6 +30,11 @@ export default function reducer(state = listStates, action) {
         index: state.index + 10,
       };
 
+    case SET_PAGINATION:
+      return {
+        ...state,
+        pagination: action.setPagination,
+      };
     default:
       return state;
   }
