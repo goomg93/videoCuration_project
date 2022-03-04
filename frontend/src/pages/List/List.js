@@ -1,12 +1,10 @@
 import React, { useRef, useCallback } from 'react';
-import { useQuery } from '@apollo/client';
 import Thumbnail from './ListComponent/Thumbnail';
-import styles from './List.module.css';
-import * as gQuery from '../../Global_Queries';
 import { useDispatch, useSelector } from 'react-redux';
+import dataFetch from '../../hooks/useDataFetch';
+import styles from './List.module.css';
 
 function List() {
-  // const scrollLeft = document.body.offsetWidth;
   const observer = useRef();
   const dispatch = useDispatch();
 
@@ -15,26 +13,26 @@ function List() {
   const limit = useSelector(state => state.ListStates.limit);
   const pagination = useSelector(state => state.ListStates.pagination);
 
-  const ref = useCallback(node => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && pagination) {
-        fetchMore({ variables: { index: index + 10, limit: limit } });
-        dispatch({ type: 'List/setIndex' });
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, []);
-
   const {
     loading,
     error,
     data: datas,
     fetchMore,
-  } = useQuery(gQuery.GET_LIST_PAGINATION, {
-    variables: { limit: parseInt(limit), index: parseInt(index) },
-  });
+  } = dataFetch.usePaginationFetch(index, limit);
+
+  const ref = useCallback(
+    node => {
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && pagination) {
+          fetchMore({ variables: { index: index + 10, limit: limit } });
+          dispatch({ type: 'List/setIndex' });
+        }
+      });
+      if (node) node && observer.current.observe(node);
+    },
+    [pagination, dispatch, fetchMore, index, limit]
+  );
 
   if (loading) return <p>Loading....</p>;
   if (error) return <p>Error To Render....</p>;

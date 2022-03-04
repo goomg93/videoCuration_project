@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import YouTube from 'react-youtube';
@@ -21,7 +21,6 @@ function PlayerModal({ videoId, playerHandler }) {
     return <p>Keep Hovering On Player</p>;
   }
   if (error) {
-    console.log(`${error}`);
     return <p>error to render....</p>;
   }
 
@@ -68,7 +67,7 @@ function PlayerModal({ videoId, playerHandler }) {
           className={styles.CoverVideo}
           onClick={() => goToDetail(videoId)}
           onMouseLeave={playerHandler}
-        ></section>
+        />
       ) : (
         <section className={styles.BlockVideo} onMouseLeave={playerHandler}>
           <p>현재 페이지에서 재생할 수 없는 영상입니다.</p>
