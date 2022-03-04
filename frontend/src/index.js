@@ -20,7 +20,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(() => {
-  return { headers: { authorization: 1234, domain: domain } };
+  return { headers: { authorization: 1234, domain: domain, name: 'eunbi' } };
 });
 
 const client = new ApolloClient({

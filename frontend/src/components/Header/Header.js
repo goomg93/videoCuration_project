@@ -45,6 +45,9 @@ const Header = () => {
             <li className={styles.navMenu}>
               <Link to="/video/playlist">live-now</Link>
             </li>
+            <li className={styles.navMenu}>
+              <Link to={`/video/youtube/${youtubeId}`}>just-watch</Link>
+            </li>
           </ul>
         </nav>
       </div>

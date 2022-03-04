@@ -1,65 +1,85 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import _ from 'lodash';
+import { BsEmojiSmileUpsideDown } from 'react-icons/bs';
 import styles from './LiveChat.module.css';
 
-const LiveChat = ({ socket, room }) => {
+const LiveChat = ({ socket, askUser, username, setUsername, joinRoom }) => {
   const [input, setInput] = useState('');
   const [messageList, setMessageList] = useState([]);
+  const nickname = useRef(null);
 
-  useEffect(() => {
-    function joinRoom(room) {
-      socket.emit('joinRoom', { room: String(room) });
-    }
-    joinRoom(room);
-  }, [socket, room]);
-
-  useEffect(() => {
-    socket.on('chatMessage', message => {});
-  }, [socket]);
-
-  const dateFormat = date => {
-    let hour = date.getHours();
-    let minute = date.getMinutes();
-
-    hour = hour >= 10 ? hour : '0' + minute;
-    minute = minute >= 10 ? minute : '0' + minute;
-
-    return hour + ':' + minute;
-  };
-
-  const sendMessage = async e => {
+  const sendMessage = e => {
+    console.log('LiveChat.js sendmessage');
     e.preventDefault();
     if (input !== '') {
-      const msg = {
-        message: input.trim(),
-        room: room,
-        time: dateFormat(new Date(Date.now())),
-      };
-
-      await socket.emit('chatMessage', msg);
-      setMessageList(list => [...list, msg]);
+      const msg = input.trim();
+      socket.emit('chatMessage', msg);
       setInput('');
     }
   };
 
-  // const handleInput = _.debounce(function (e) {
-  //   setInput(e.target.value);
-  // }, 500);
+  const focusInput = () => {
+    nickname.current.focus();
+  };
+
+  useEffect(() => {
+    console.log('LiveChat.js useeffect');
+    socket.on('message', data => {
+      console.log(data);
+      setMessageList(list => [...list, data]);
+    });
+  }, [socket]);
 
   return (
     <section className={styles.LiveChat}>
+      {askUser && (
+        <>
+          <div className={styles.joinBackground} onClick={focusInput} />
+          <div className={styles.join}>
+            <div className={styles.joinModal}>
+              <h3>실시간 채팅</h3>
+              <input
+                ref={nickname}
+                type="text"
+                placeholder="닉네임을 입력해주세요"
+                onChange={event => {
+                  setUsername(event.target.value);
+                }}
+                onKeyPress={e => {
+                  e.key === 'Enter' && joinRoom(e);
+                }}
+              />
+              <button
+                onClick={joinRoom}
+                onKeyPress={e => {
+                  e.key === 'Enter' && joinRoom(e);
+                }}
+              >
+                참여하기
+              </button>
+            </div>
+          </div>
+        </>
+      )}
       <article className={styles.chatContentContainer}>
         <div className={styles.chatTitlebar}>
-          <h2>Chat for playlistId : {room}</h2>
+          <h2>LIVE CHAT</h2>
         </div>
         <ScrollToBottom className={styles.chatMessages}>
           {messageList.map((message, index) => (
-            <div key={index} className={styles.message}>
-              <p className={styles.text}>{message.message}</p>
-              <p className={styles.meta}>
-                {message.user} <span>{message.time}</span>
-              </p>
+            <div
+              key={index}
+              className={styles.message}
+              id={message.username === username ? `${styles.you}` : ''}
+            >
+              <BsEmojiSmileUpsideDown className={styles.avatar} id />
+              <div className={styles.messageWrapper}>
+                <p className={styles.meta}>
+                  <span className={styles.username}>{message.username}</span>{' '}
+                  <span classname={styles.time}>{message.time}</span>
+                </p>
+                <p className={styles.text}>{message.text}</p>
+              </div>
             </div>
           ))}
         </ScrollToBottom>
@@ -69,18 +89,23 @@ const LiveChat = ({ socket, room }) => {
           <input
             type="text"
             value={input}
+            disabled={askUser ? true : false}
             placeholder="Enter Message"
-            onChange={e => {
-              setInput(e.target.value);
-            }}
-            onKeyPress={e => {
-              e.key === 'Enter' && sendMessage(e);
-            }}
+            onChange={e => setInput(e.target.value)}
             autoComplete="off"
             autoFocus
             required
+            onKeyPress={e => {
+              e.key === 'Enter' && sendMessage(e);
+            }}
           />
-          <button className={styles.chatBtn} onClick={sendMessage}>
+          <button
+            className={styles.chatBtn}
+            onClick={sendMessage}
+            onKeyPress={e => {
+              e.key === 'Enter' && sendMessage(e);
+            }}
+          >
             Send
           </button>
         </form>

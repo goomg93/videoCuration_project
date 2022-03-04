@@ -15,7 +15,9 @@ function Router() {
           <Route index element={<List />} />
           <Route path="/verticalscroll" element={<Sub />} />
           <Route path="/:category" element={<SortList />} />
-          <Route path="/video/:type" element={<Detail />} />
+          <Route path="/video/:type/" element={<Detail />}>
+            <Route path=":videoId" element={<Detail />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

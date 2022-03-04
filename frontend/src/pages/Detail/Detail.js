@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 
 import Player from '../../components/Player/Player';
-import PlayerLive from '../../components/PlayerLive/PlayerLive';
 import PlayerLayer from '../../components/PlayerLayer/PlayerLayer';
 
 import useLiveChat from '../../hooks/useLiveChat';
@@ -21,33 +21,59 @@ const DetailLive = () => {
   const [player, setPlayer] = useState(false);
   const [playlist, setPlaylist] = useState(false);
   const isPlaying = useRef(false);
+  const [username, setUsername] = useState('');
+  const [askUser, setAskUser] = useState(true);
 
   useEffect(() => {
-    if (type === 'playlist') {
+    console.log('Detail.js useEffect- type');
+    if (type === 'playlist' && !videoId) {
       setPlaylist(true);
       isPlaying.current = true;
-    } else if (type === 'video') {
+    } else if (type === 'youtube') {
       setPlayer(true);
     }
-  }, [type]);
+    return () => {
+      setPlaylist(false);
+      setPlayer(false);
+    };
+  }, [type, videoId]);
+
+  const joinRoom = () => {
+    if (username !== '') {
+      socket.emit('joinRoom', { username, room: 'PLAYLISTID' });
+      setAskUser(false);
+    }
+  };
 
   return (
     <>
-      <div className={styles.background} onClick={() => navigate('/')} />
+      <div className={styles.background}>
+        <h1 className={styles.logo}>
+          <Link className={styles.logoLink} to="/">
+            BZZNBYD
+          </Link>
+        </h1>
+        <IoClose className={styles.closeBtn} onClick={() => navigate('/')} />
+      </div>
       {playlist && (
-        <section className={styles.Playlist}>
-          <h1 className={styles.heading}>PLAYLIST</h1>
+        <section className={styles.Detail}>
+          {/* <h1 className={styles.heading}>LIVE-SYNCED</h1> */}
           <main className={styles.mainWrapper}>
-            {/* <PlayerLive className={styles.player} isPlaying={isPlaying} /> */}
             <PlayerLayer className={styles.player} />
-            <LiveChat socket={socket} room={videoId} />
+            <LiveChat
+              socket={socket}
+              askUser={askUser}
+              username={username}
+              setUsername={setUsername}
+              joinRoom={joinRoom}
+            />
           </main>
         </section>
       )}
 
       {player && (
         <section className={styles.Detail}>
-          <h1 className={styles.heading}>USING NPM REACT-YOUTUBE</h1>
+          <h1 className={styles.heading}>JUST-YOUTUBE</h1>
           <main className={styles.mainWrapper}>
             <Player className={styles.player} videoId={videoId} />
           </main>

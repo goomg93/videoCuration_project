@@ -6,6 +6,7 @@ const GET_VIDEO_NOW = gql`
       id
       listTimestamp
       videoId
+      title
     }
   }
 `;

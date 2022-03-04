@@ -54,3 +54,12 @@
 .playerClickArea:hover .playButton {
   display: block;
 }
+
+.videoTitle {
+  position: absolute;
+  bottom: -10%;
+  transform: translateY(100%);
+  margin: 20px;
+  z-index: 9999;
+  color: white;
+}
