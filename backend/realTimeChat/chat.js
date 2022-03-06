@@ -7,6 +7,7 @@ import {
   getCurrentUserInfo,
 } from '../mongodb/chatDataHandler';
 import dotenv from 'dotenv';
+import { logger } from '../winston/logs';
 
 dotenv.config();
 
@@ -19,6 +20,11 @@ const realTimeChat = io => {
       port: process.env.CONNECT_REDIS_ADAPTER_PORT,
     })
   );
+
+  io.of('/').adapter.on('error', error => {
+    logger.error('Socker.io-redis connected Error');
+  });
+
   io.on('connection', socket => {
     socket.on('joinRoom', async ({ username, room }) => {
       const id = socket.id;
