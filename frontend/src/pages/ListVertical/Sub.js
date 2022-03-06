@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
-import useVideoPagination from '../../hooks/useVideoPagination';
+import useDataFetch from '../../hooks/useDataFetch';
 import Thumbnail from './SubComponent/Thumbnail';
 import styles from './Sub.module.css';
 
 function Sub() {
-  const { loading, error, data, fetchMore } = useVideoPagination();
+  const { loading, error, data, fetchMore } = useDataFetch.useDataFetch();
   const newIndex = useRef(0);
   const [hasMore, setHasMore] = useState(false);
 
