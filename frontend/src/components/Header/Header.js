@@ -1,32 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
+import useDataFetch from '../../hooks/useDataFetch';
 import styles from './Header.module.css';
-
-const GET_VIDEO_INFO = gql`
-  query Video($videoId: Int) {
-    video(id: $videoId) {
-      youtubeId: videoId
-    }
-  }
-`;
 
 const Header = () => {
   const [youtubeId, setYoutubeId] = useState();
-  const {
-    data: videoData,
-    loading,
-    error,
-  } = useQuery(GET_VIDEO_INFO, {
-    variables: { videoId: 1 },
-    fetchPolicy: 'network-only',
-  });
+  const { loading, error, data } = useDataFetch.useFirstVideoId();
 
   useEffect(() => {
-    if (videoData && !loading && !error) {
-      setYoutubeId(videoData?.video.youtubeId);
+    if (data && !loading && !error) {
+      setYoutubeId(data?.video.youtubeId);
     }
-  }, [videoData, loading, error]);
+  }, [data, loading, error]);
 
   return (
     <header className={styles.header}>

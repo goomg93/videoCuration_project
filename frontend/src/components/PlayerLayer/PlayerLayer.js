@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import YouTube from 'react-youtube';
 import { BsPlayBtn, BsPauseBtn } from 'react-icons/bs';
-import useVideoNow from '../../hooks/useVideoNow';
+import dataFetch from '../../hooks/useDataFetch';
 import styles from './PlayerLayer.module.css';
 
 const PlayerLayer = () => {
-  const { loading, error, data, refetch } = useVideoNow();
+  const { loading, error, data, refetch } = dataFetch.useLiveVideo();
   const youtubePlayer = useRef(null);
   const [playtime, setPlaytime] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
