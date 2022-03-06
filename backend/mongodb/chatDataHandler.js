@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 import getNextSequenceValue from './indexController';
 import dotenv from 'dotenv';
+import { logger } from '../winston/logs';
 
 dotenv.config();
 
@@ -12,9 +13,9 @@ let db;
 const dbConnect = async () => {
   try {
     await client.connect();
-    if (process.env.NODE_ENV !== 'production') console.log('connected');
+    logger.info('MongoDB connected Success');
   } catch (e) {
-    console.error(e);
+    logger.error('MongoDB connected Error');
   }
 };
 
@@ -41,7 +42,7 @@ const insertUserInfo = async user => {
 
     await col.insertOne(userInfo);
   } catch (e) {
-    console.error(e);
+    logger.error(e.message);
   }
 };
 
@@ -50,7 +51,7 @@ const deleteUserInfo = async user => {
     db = client.db(`room_${user.room}`);
     await db.collection('userInfo').findOneAndDelete({ user_id: user.id });
   } catch (e) {
-    console.error(e);
+    logger.error(e.message);
   }
 };
 
@@ -60,7 +61,7 @@ const getCurrentUserInfo = async user => {
     const users = await db.collection('userInfo').find({}, { name: 1, user_id: 0 }).toArray();
     return users;
   } catch (e) {
-    console.error(e);
+    logger.error(e.message);
   }
 };
 
@@ -77,7 +78,7 @@ const insertMsg = async (msg, user) => {
     };
     await col.insertOne(message);
   } catch (e) {
-    console.error(e);
+    logger.error(e.message);
   }
 };
 

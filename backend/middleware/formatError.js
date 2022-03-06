@@ -1,9 +1,7 @@
+import { logger } from '../winston/logs';
+
 const formatError = err => {
-  console.error('--- GraphQL Error ---');
-  console.error('Path:', err.path);
-  console.error('Message:', err.message);
-  console.error('Code:', err.extensions.code);
-  console.error('Original Error', err.originalError);
+  logger.error(`🔹 ${err.extensions.code} : ${err.message} 🔹 Path : ${err.path}`);
   return err;
 };
 
