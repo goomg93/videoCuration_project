@@ -22,11 +22,15 @@
     "graphql": "^16.3.0",
     "momnet": "^2.29.1",
     "mongodb": "^4.4.0",
+    "morgan": "^1.10.0",
     "node-cron": "^3.0.0",
     "node-fetch-npm": "^2.0.4",
     "redis": "^4.0.3",
     "socket.io": "^4.4.1",
-    "socket.io-redis": "^6.1.1"
+    "socket.io-redis": "^6.1.1",
+    "winston": "^3.6.0",
+    "winston-daily-rotate-file": "^4.6.1",
+    "winston-mongodb": "^5.0.7"
   },
   "devDependencies": {
     "eslint": "^8.9.0",

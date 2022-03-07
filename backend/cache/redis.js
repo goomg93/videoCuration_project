@@ -1,5 +1,6 @@
 const redis = require('redis');
 import dotenv from 'dotenv';
+import { logger } from '../winston/logs';
 
 dotenv.config();
 
@@ -13,7 +14,8 @@ const connectRedisServer = async () => {
 
     return client;
   } catch (err) {
-    console.log('--- redis-server disconnect ---');
+    const error = new Error('Redis connected Error');
+    logger.error(error.message);
     return false;
   }
 };

@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import fetch from 'node-fetch-npm';
 import dotenv from 'dotenv';
 import connectRedisServer from './redis';
+import { logger } from '../winston/logs';
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ const makeCache = async () => {
   reprocessData(listData);
   listData = JSON.stringify(listData);
   await redis.set('data', listData);
-  console.log('최신화완료');
+  logger.info('Update Data');
 };
 
 const reprocessData = data => {
@@ -44,8 +45,8 @@ const getApi = async context => {
     }
   );
   const data = await response.json();
-  if (data === null) {
-    throw new Error('not exsist data');
+  if (!data.data) {
+    throw new Error('NOT EXSIST DATA');
   }
   return data.data;
 };
