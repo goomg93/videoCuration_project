@@ -2,44 +2,18 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import { createTestClient } from 'apollo-server-testing';
 import typeDefs from '../graphql/typeDefs';
 import resolvers from '../graphql/resolvers';
-import express from 'express';
-import request from 'supertest';
-import http from 'http';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const testApolloServer = async () => {
-  const app = express();
-  const expressServer = http.createServer(app);
 
-  app.use(cors());
-  app.use(routes);
-
-  const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: async ({ req }) => {
-      const LIST_ID = await authentication(req);
-      return { LIST_ID };
-    },
-  });
-
-  await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
-};
-
-test('healthy check', async () => {
-  const res = await request(app).get('/healthy').expect(200);
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async () => {
+    const LIST_ID = process.env.LIST_ID;
+    return { LIST_ID };
+  },
 });
-
-// const server = new ApolloServer({
-//   typeDefs,
-//   resolvers,
-//   context: async () => {
-//     const LIST_ID = process.env.LIST_ID;
-//     return { LIST_ID };
-//   },
-// });
 
 const { query } = createTestClient(server);
 

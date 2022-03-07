@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "NODE_ENV=testing jest",
+    "test": "jest --forceExit",
     "start": "NODE_ENV=production babel-node server.js",
     "dev": "NODE_ENV=develop nodemon server.js --exec babel-node"
   },
