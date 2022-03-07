@@ -37,10 +37,15 @@ const useVerticalScroll = () => {
     variables: { index: index, limit: limit },
   });
 
+  return { loading, error, data, fetchMore };
+};
+const useCategoryFetch = () => {
+  const { loading, error, data } = useQuery(gQuery.GET_LIST);
+
   if (loading) return loading;
   if (error) return error;
 
-  return { loading, error, data, fetchMore };
+  return { loading, error, data };
 };
 
 const useLiveVideo = () => {
@@ -57,6 +62,7 @@ const Fetchs = {
   usePaginationFetch,
   useVerticalScroll,
   useLiveVideo,
+  useCategoryFetch,
 };
 
 export default Fetchs;
