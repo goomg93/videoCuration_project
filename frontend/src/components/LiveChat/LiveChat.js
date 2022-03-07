@@ -1,15 +1,21 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import { BsEmojiSmileUpsideDown } from 'react-icons/bs';
+import {
+  BsEmojiSmileUpsideDown,
+  BsChevronDown,
+  BsChevronUp,
+} from 'react-icons/bs';
+import JoinChat from './JoinChat';
+import UsersDropDown from './UsersDropDown';
 import styles from './LiveChat.module.css';
 
 const LiveChat = ({ socket, askUser, username, setUsername, joinRoom }) => {
   const [input, setInput] = useState('');
   const [messageList, setMessageList] = useState([]);
-  const nickname = useRef(null);
+  const [userList, setUserList] = useState([]);
+  const [viewUserList, setViewUserList] = useState(false);
 
   const sendMessage = e => {
-    console.log('LiveChat.js sendmessage');
     e.preventDefault();
     if (input !== '') {
       const msg = input.trim();
@@ -18,66 +24,57 @@ const LiveChat = ({ socket, askUser, username, setUsername, joinRoom }) => {
     }
   };
 
-  const focusInput = () => {
-    nickname.current.focus();
-  };
-
   useEffect(() => {
-    console.log('LiveChat.js useeffect');
     socket.on('message', data => {
-      console.log(data);
       setMessageList(list => [...list, data]);
+    });
+    socket.on('roomUsers', ({ room, users }) => {
+      users = users.filter(user => user.username !== null);
+      setUserList([...users]);
     });
   }, [socket]);
 
   return (
     <section className={styles.LiveChat}>
-      {askUser && (
-        <>
-          <div className={styles.joinBackground} onClick={focusInput} />
-          <div className={styles.join}>
-            <div className={styles.joinModal}>
-              <h3>실시간 채팅</h3>
-              <input
-                ref={nickname}
-                type="text"
-                placeholder="닉네임을 입력해주세요"
-                onChange={event => {
-                  setUsername(event.target.value);
-                }}
-                onKeyPress={e => {
-                  e.key === 'Enter' && joinRoom(e);
-                }}
-              />
-              <button
-                onClick={joinRoom}
-                onKeyPress={e => {
-                  e.key === 'Enter' && joinRoom(e);
-                }}
-              >
-                참여하기
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+      {askUser && <JoinChat setUsername={setUsername} joinRoom={joinRoom} />}
       <article className={styles.chatContentContainer}>
-        <div className={styles.chatTitlebar}>
-          <h2>LIVE CHAT</h2>
+        <div
+          className={styles.chatTitlebar}
+          onClick={() => setViewUserList(viewUserList => !viewUserList)}
+        >
+          <h2>
+            LIVE CHAT{' '}
+            <span>
+              {userList.length === 0 ? '' : `${userList.length}`}
+              {viewUserList ? (
+                <BsChevronUp className={styles.chevron} />
+              ) : (
+                <BsChevronDown
+                  className={styles.chevron}
+                  // onClick={() => setViewUserList(true)}
+                />
+              )}
+            </span>
+          </h2>
         </div>
+        <UsersDropDown
+          username={username}
+          viewUserList={viewUserList}
+          userList={userList}
+        />
         <ScrollToBottom className={styles.chatMessages}>
           {messageList.map((message, index) => (
             <div
               key={index}
               className={styles.message}
-              id={message.username === username ? `${styles.you}` : ''}
+              id={message.username === username ? `${styles.you}` : 'other'}
             >
-              <BsEmojiSmileUpsideDown className={styles.avatar} id />
+              <BsEmojiSmileUpsideDown className={styles.avatar} />
               <div className={styles.messageWrapper}>
-                <p className={styles.meta}>
+                <div className={styles.meta}>
                   <span className={styles.username}>{message.username}</span>{' '}
-                  <span classname={styles.time}>{message.time}</span>
-                </p>
+                  <span className={styles.time}>{message.time}</span>
+                </div>
                 <p className={styles.text}>{message.text}</p>
               </div>
             </div>

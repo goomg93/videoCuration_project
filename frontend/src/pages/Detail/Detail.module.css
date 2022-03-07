@@ -48,15 +48,6 @@
   justify-content: space-between;
 }
 
-.heading {
-  color: yellow;
-  text-shadow: 2px 2px gray;
-  font-size: 50px;
-  text-align: center;
-  font-family: 'Rammetto One', cursive;
-  z-index: 99;
-}
-
 h2 {
   text-align: center;
 }

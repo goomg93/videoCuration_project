@@ -57,7 +57,6 @@ const DetailLive = () => {
       </div>
       {playlist && (
         <section className={styles.Detail}>
-          {/* <h1 className={styles.heading}>LIVE-SYNCED</h1> */}
           <main className={styles.mainWrapper}>
             <PlayerLayer className={styles.player} />
             <LiveChat
