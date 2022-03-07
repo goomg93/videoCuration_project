@@ -4,7 +4,7 @@ import Thumbnail from './SubComponent/Thumbnail';
 import styles from './Sub.module.css';
 
 function Sub() {
-  const { loading, error, data, fetchMore } = useDataFetch.useDataFetch();
+  const { loading, error, data, fetchMore } = useDataFetch.useVerticalScroll();
   const newIndex = useRef(0);
   const [hasMore, setHasMore] = useState(false);
 

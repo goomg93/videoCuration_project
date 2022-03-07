@@ -1,50 +1,85 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 
-import PlayerSingle from '../../components/Player/PlayerSingle';
+import Player from '../../components/Player/Player';
 import PlayerLayer from '../../components/PlayerLayer/PlayerLayer';
+
+import useLiveChat from '../../hooks/useLiveChat';
+import LiveChat from '../../components/LiveChat/LiveChat';
 
 import styles from './Detail.module.css';
 import '../../styles/reset.css';
 import '../../styles/common.css';
 
-const Detail = () => {
+const DetailLive = () => {
+  const { socket } = useLiveChat();
+  const navigate = useNavigate();
   const params = useParams();
   const type = params.type;
   const videoId = params.videoId;
-  const [single, setSingle] = useState(false);
-  const [layer, setLayer] = useState(false);
+  const [player, setPlayer] = useState(false);
+  const [playlist, setPlaylist] = useState(false);
+  const isPlaying = useRef(false);
+  const [username, setUsername] = useState('');
+  const [askUser, setAskUser] = useState(true);
 
   useEffect(() => {
-    if (type === 'video') {
-      setSingle(true);
-    } else if (type === 'layer') {
-      setLayer(true);
+    console.log('Detail.js useEffect- type');
+    if (type === 'playlist' && !videoId) {
+      setPlaylist(true);
+      isPlaying.current = true;
+    } else if (type === 'youtube') {
+      setPlayer(true);
     }
-  }, [type]);
+    return () => {
+      setPlaylist(false);
+      setPlayer(false);
+    };
+  }, [type, videoId]);
+
+  const joinRoom = () => {
+    if (username !== '') {
+      socket.emit('joinRoom', { username, room: 'PLAYLISTID' });
+      setAskUser(false);
+    }
+  };
 
   return (
-    <section className={styles.Detail}>
-      {single && (
-        <>
-          <h1 className={styles.heading}>USING NPM REACT-YOUTUBE</h1>
+    <>
+      <div className={styles.background}>
+        <h1 className={styles.logo}>
+          <Link className={styles.logoLink} to="/">
+            BZZNBYD
+          </Link>
+        </h1>
+        <IoClose className={styles.closeBtn} onClick={() => navigate('/')} />
+      </div>
+      {playlist && (
+        <section className={styles.Detail}>
           <main className={styles.mainWrapper}>
-            <PlayerSingle className={styles.player} videoId={videoId} />
+            <PlayerLayer className={styles.player} />
+            <LiveChat
+              socket={socket}
+              askUser={askUser}
+              username={username}
+              setUsername={setUsername}
+              joinRoom={joinRoom}
+            />
           </main>
-        </>
+        </section>
       )}
-      {layer && (
-        <>
-          <h1 className={styles.heading}>LAYER APPROACH </h1>
-          <h1 className={styles.heading}>WITH REACT-YOUTUBE</h1>
 
+      {player && (
+        <section className={styles.Detail}>
+          <h1 className={styles.heading}>JUST-YOUTUBE</h1>
           <main className={styles.mainWrapper}>
-            <PlayerLayer className={styles.player} videoId={videoId} />
+            <Player className={styles.player} videoId={videoId} />
           </main>
-        </>
+        </section>
       )}
-    </section>
+    </>
   );
 };
 
-export default Detail;
+export default DetailLive;

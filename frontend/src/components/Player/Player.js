@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import YouTube from 'react-youtube';
 import styles from './Player.module.css';
 
-const PlayerSingle = ({ videoId }) => {
+const Player = ({ videoId }) => {
   const opts = {
     playerVars: {
       autoplay: 1,
@@ -32,4 +31,4 @@ const PlayerSingle = ({ videoId }) => {
   );
 };
 
-export default PlayerSingle;
+export default Player;

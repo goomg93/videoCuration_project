@@ -2,13 +2,43 @@
   text-align: center;
 }
 
+.background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  opacity: 0.93;
+  padding: 20px;
+}
+
+.logoLink {
+  font-size: 2rem;
+  font-family: 'Rammetto One', cursive;
+  color: white;
+  z-index: 999;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  color: white;
+  z-index: 999;
+  cursor: pointer;
+}
+
 .Detail {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 30px;
   width: 100%;
   height: 100vh;
-  padding: 50px;
   box-sizing: border-box;
   background-color: white;
 }
@@ -18,14 +48,6 @@
   justify-content: space-between;
 }
 
-.heading {
-  color: yellow;
-  text-shadow: 2px 2px gray;
-  font-size: 50px;
-  text-align: center;
-  font-family: 'Rammetto One', cursive;
-}
-
 h2 {
   text-align: center;
 }
@@ -33,5 +55,16 @@ h2 {
 .mainWrapper {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  width: 100%;
+  max-width: 1600px;
+  height: auto;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 15px 15px 20px black;
+  position: relative;
+}
+
+.join {
+  position: absolute;
+  z-index: 999;
 }
