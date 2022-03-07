@@ -17,7 +17,7 @@ const makeCache = async context => {
   let redis = await connectRedisServer();
   reprocessData(listData);
   listData = JSON.stringify(listData);
-  await redis.set('data', listData);
+  await redis.set(`${context.LIST_ID}`, listData);
   logger.info('Update Data');
 };
 
