@@ -46,7 +46,6 @@ export const GET_LIST_SCROLL = gql`
   }
 `;
 
-//
 export const GET_VIDEO_INFO = gql`
   query VideoInfo($videoId: String!) {
     video(videoId: $videoId) {
@@ -63,6 +62,14 @@ export const GET_LIVE_VIDEO = gql`
       listTimestamp
       videoId
       title
+    }
+  }
+`;
+
+export const GET_CATEGORIES = gql`
+  query GetCategories {
+    videos {
+      category
     }
   }
 `;

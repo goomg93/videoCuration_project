@@ -39,8 +39,9 @@ const useVerticalScroll = () => {
 
   return { loading, error, data, fetchMore };
 };
+
 const useCategoryFetch = () => {
-  const { loading, error, data } = useQuery(gQuery.GET_LIST);
+  const { loading, error, data } = useQuery(gQuery.GET_CATEGORIES);
 
   if (loading) return loading;
   if (error) return error;
