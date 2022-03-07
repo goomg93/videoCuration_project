@@ -1,0 +1,32 @@
+.dropdownMenu {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 70%;
+  padding: 20px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px black;
+  background-color: #f0f0f0;
+  z-index: 999;
+}
+
+.userList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 5px;
+
+  height: 100%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.userList::-webkit-scrollbar {
+  display: none;
+}
+
+#myUsername {
+  order: -1;
+}
