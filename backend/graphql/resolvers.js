@@ -17,11 +17,11 @@ const resolvers = {
       }
     },
     videoPagination: async (_, { index, limit }, context) => {
-      let data = await video.videoAllData();
+      let data = await video.videoAllData(context);
       return video.videoPagination(index, limit, data);
     },
     videoFilterByCategory: async (_, { category }, context) => {
-      let data = await video.videoAllData();
+      let data = await video.videoAllData(context);
       return video.videoFilterByCategory(category, data);
     },
   },

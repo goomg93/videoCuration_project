@@ -60,4 +60,4 @@ const startApolloServer = async (typeDefs, resolvers) => {
   }
 };
 startApolloServer(typeDefs, resolvers);
-cache.cacheSchedule();
+cache.cacheSchedule(process.env.LIST_ID);
