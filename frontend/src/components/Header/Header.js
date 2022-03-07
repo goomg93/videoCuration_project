@@ -1,32 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
+import useDataFetch from '../../hooks/useDataFetch';
 import styles from './Header.module.css';
-
-const GET_VIDEO_INFO = gql`
-  query Video($videoId: Int) {
-    video(id: $videoId) {
-      youtubeId: videoId
-    }
-  }
-`;
 
 const Header = () => {
   const [youtubeId, setYoutubeId] = useState();
-  const {
-    data: videoData,
-    loading,
-    error,
-  } = useQuery(GET_VIDEO_INFO, {
-    variables: { videoId: 1 },
-    fetchPolicy: 'network-only',
-  });
+  const { loading, error, data } = useDataFetch.useFirstVideoId();
 
   useEffect(() => {
-    if (videoData && !loading && !error) {
-      setYoutubeId(videoData?.video.youtubeId);
+    if (data && !loading && !error) {
+      setYoutubeId(data?.video.youtubeId);
     }
-  }, [videoData, loading, error]);
+  }, [data, loading, error]);
 
   return (
     <header className={styles.header}>
@@ -40,19 +25,13 @@ const Header = () => {
               <Link to="/">home</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to="/verticalscroll">scroll</Link>
+              <Link to="/verticalscroll">infinite-scroll</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to="/playlist">playlist</Link>
+              <Link to="/video/playlist">live-now</Link>
             </li>
             <li className={styles.navMenu}>
-              <Link to={`/video/${youtubeId}`}>react-youtube</Link>
-            </li>
-            <li className={styles.navMenu}>
-              <Link to={`/layer/${youtubeId}`}>using-layer</Link>
-            </li>
-            <li className={styles.navMenu}>
-              <Link to={`/chat/${youtubeId}`}>chat</Link>
+              <Link to={`/video/youtube/${youtubeId}`}>just-watch</Link>
             </li>
           </ul>
         </nav>
