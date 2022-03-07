@@ -45,11 +45,11 @@ const opts = (level, format) => {
 };
 
 const logger = winston.createLogger({
-  transports: [opts('verbose', 'MongoDb')],
+  transports: [opts('verbose', 'Console')],
 });
 
 if (process.env.NODE_ENV === 'production') {
-  logger.add(opts('verbose', 'Console'));
+  logger.add(opts('verbose', 'MongoDb'));
 }
 
 logger.stream = {
