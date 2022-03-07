@@ -13,9 +13,10 @@ let db;
 const dbConnect = async () => {
   try {
     await client.connect();
-    logger.info('MongoDB connected Success');
+    return true;
   } catch (e) {
     logger.error('MongoDB connected Error');
+    return false;
   }
 };
 
