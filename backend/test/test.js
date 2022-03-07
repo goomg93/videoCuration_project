@@ -2,22 +2,36 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import { createTestClient } from 'apollo-server-testing';
 import typeDefs from '../graphql/typeDefs';
 import resolvers from '../graphql/resolvers';
+import express from 'express';
 import request from 'supertest';
+import http from 'http';
 import dotenv from 'dotenv';
-import { app, startApolloServer } from '../server';
-import { isType } from 'graphql';
 
 dotenv.config();
+const testApolloServer = async () => {
+  const app = express();
+  const expressServer = http.createServer(app);
 
-const { apolloServer } = startApolloServer(typeDefs, resolvers);
+  app.use(cors());
+  app.use(routes);
 
-describe('video', () => {
-  const req = request(app);
-
-  it('find video', async () => {
-    const res = await req.post(apolloServer).send({ query: '{video (id:2){id}}' }).expect(200);
+  const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: async ({ req }) => {
+      const LIST_ID = await authentication(req);
+      return { LIST_ID };
+    },
   });
+
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+};
+
+test('healthy check', async () => {
+  const res = await request(app).get('/healthy').expect(200);
 });
+
 // const server = new ApolloServer({
 //   typeDefs,
 //   resolvers,
@@ -27,119 +41,137 @@ describe('video', () => {
 //   },
 // });
 
-// const { query } = createTestClient(server);
+const { query } = createTestClient(server);
 
-// describe('find video logic', () => {
-//   test('find video', async () => {
-//     const FIND_VIDEO = gql`
-//       query {
-//         video(id: 2) {
-//           id
-//         }
-//       }
-//     `;
-//     const {
-//       data: { video },
-//     } = await query({ query: FIND_VIDEO });
+describe('find video logic', () => {
+  test('find video', async () => {
+    const FIND_VIDEO = gql`
+      query {
+        video(id: 2) {
+          id
+        }
+      }
+    `;
+    const {
+      data: { video },
+    } = await query({ query: FIND_VIDEO });
 
-//     expect(video).toEqual({
-//       id: 2,
-//     });
-//   });
+    expect(video).toEqual({
+      id: 2,
+    });
+  });
 
-//   test('not input error when find video', async () => {
-//     const FIND_VIDEO = gql`
-//       query {
-//         video {
-//           id
-//         }
-//       }
-//     `;
-//     const {
-//       errors: [error],
-//     } = await query({ query: FIND_VIDEO });
+  test('not input error when find video', async () => {
+    const FIND_VIDEO = gql`
+      query {
+        video {
+          id
+        }
+      }
+    `;
+    const {
+      errors: [error],
+    } = await query({ query: FIND_VIDEO });
 
-//     expect(error.message).toEqual('not input');
-//   });
+    expect(error.message).toEqual('not input');
+  });
 
-//   test('invalid id error when find video', async () => {
-//     const FIND_VIDEO = gql`
-//       query {
-//         video(id: -1) {
-//           id
-//         }
-//       }
-//     `;
-//     const {
-//       errors: [error],
-//     } = await query({ query: FIND_VIDEO });
+  test('invalid id error when find video', async () => {
+    const FIND_VIDEO = gql`
+      query {
+        video(id: -1) {
+          id
+        }
+      }
+    `;
+    const {
+      errors: [error],
+    } = await query({ query: FIND_VIDEO });
 
-//     expect(error.message).toEqual('Invalid id');
-//   });
+    expect(error.message).toEqual('Invalid id');
+  });
 
-//   test('invalid id error when find video', async () => {
-//     const FIND_VIDEO = gql`
-//       query {
-//         video(videoId: "string") {
-//           id
-//         }
-//       }
-//     `;
-//     const {
-//       errors: [error],
-//     } = await query({ query: FIND_VIDEO });
+  test('invalid id error when find video', async () => {
+    const FIND_VIDEO = gql`
+      query {
+        video(videoId: "string") {
+          id
+        }
+      }
+    `;
+    const {
+      errors: [error],
+    } = await query({ query: FIND_VIDEO });
 
-//     expect(error.message).toEqual('Invalid videoId');
-//   });
+    expect(error.message).toEqual('Invalid videoId');
+  });
 
-//   test('find videos', async () => {
-//     const FIND_VIDEO = gql`
-//       query {
-//         videos {
-//           id
-//         }
-//       }
-//     `;
-//     const {
-//       data: { videos },
-//     } = await query({ query: FIND_VIDEO });
+  test('find videos', async () => {
+    const FIND_VIDEO = gql`
+      query {
+        videos {
+          id
+        }
+      }
+    `;
+    const {
+      data: { videos },
+    } = await query({ query: FIND_VIDEO });
 
-//     expect(videos.length).toBeGreaterThan(2);
-//   });
-// });
+    expect(videos.length).toBeGreaterThan(2);
+  });
+});
 
-// test('correct videoPagination', async () => {
-//   const FIND_VIDEO_PAGINATION = gql`
-//     query ($limit: Int!, $index: Int!) {
-//       videoPagination(limit: $limit, index: $index) {
-//         id
-//         videoId
-//         thumbnails
-//         title
-//       }
-//     }
-//   `;
-//   const {
-//     data: { videoPagination },
-//   } = await query({ query: FIND_VIDEO_PAGINATION, variables: { limit: 10, index: 1 } });
+test('correct videoPagination start index 1', async () => {
+  const FIND_VIDEO_PAGINATION = gql`
+    query ($limit: Int!, $index: Int!) {
+      videoPagination(limit: $limit, index: $index) {
+        id
+        videoId
+        thumbnails
+        title
+      }
+    }
+  `;
+  const {
+    data: { videoPagination },
+  } = await query({ query: FIND_VIDEO_PAGINATION, variables: { limit: 10, index: 1 } });
 
-//   expect(videoPagination.length).toEqual(10);
-// });
+  expect(videoPagination.length).toEqual(11);
+});
 
-// test('videoFilterByCategory', async () => {
-//   const FILTER_VIDEO_BY_CATEGORY = gql`
-//     query videoFilterByCategory {
-//       videoFilterByCategory(category: "ASMR") {
-//         videoId
-//         thumbnails
-//         category
-//         title
-//       }
-//     }
-//   `;
-//   const {
-//     data: { videoFilterByCategory },
-//   } = await query({ query: FILTER_VIDEO_BY_CATEGORY });
+test('correct videoPagination', async () => {
+  const FIND_VIDEO_PAGINATION = gql`
+    query ($limit: Int!, $index: Int!) {
+      videoPagination(limit: $limit, index: $index) {
+        id
+        videoId
+        thumbnails
+        title
+      }
+    }
+  `;
+  const {
+    data: { videoPagination },
+  } = await query({ query: FIND_VIDEO_PAGINATION, variables: { limit: 10, index: 11 } });
 
-//   expect(videoFilterByCategory.filter(el => !el.category.includes('ASMR')).length).toEqual(0);
-// });
+  expect(videoPagination.length).toEqual(10);
+});
+
+test('videoFilterByCategory', async () => {
+  const FILTER_VIDEO_BY_CATEGORY = gql`
+    query videoFilterByCategory {
+      videoFilterByCategory(category: "ASMR") {
+        videoId
+        thumbnails
+        category
+        title
+      }
+    }
+  `;
+  const {
+    data: { videoFilterByCategory },
+  } = await query({ query: FILTER_VIDEO_BY_CATEGORY });
+
+  expect(videoFilterByCategory.filter(el => !el.category.includes('ASMR')).length).toEqual(0);
+});
