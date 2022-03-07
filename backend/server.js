@@ -11,6 +11,9 @@ import realTimeChat from './realTimeChat/chat';
 import { dbConnect } from './mongodb/chatDataHandler';
 import formatError from './middleware/formatError';
 import authentication from './middleware/auth';
+import routes from './healthyCheck';
+import { logger } from './winston/logs';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -21,7 +24,15 @@ const startApolloServer = async (typeDefs, resolvers) => {
     const app = express();
     const expressServer = http.createServer(app);
     const io = socketIO(expressServer, { cors: { origin: '*' } });
+
     app.use(cors());
+    app.use(routes);
+    app.use(
+      morgan(`${process.env.MORGAN_FORMAT}`, {
+        stream: logger.stream,
+      })
+    );
+
     const apolloServer = new ApolloServer({
       cors: {
         origin: '*',
@@ -35,16 +46,17 @@ const startApolloServer = async (typeDefs, resolvers) => {
       formatError,
       debug: false,
     });
+
     dbConnect();
     realTimeChat(io);
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
+
     expressServer.listen(PORT, () => {
-      if (process.env.NODE_ENV !== 'production')
-        console.log(`Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`);
+      logger.info(`Server ready at https://www2.wecode.buzzntrend.com:${PORT}`);
     });
   } catch (err) {
-    console.log(err);
+    logger.error(err.message);
   }
 };
 startApolloServer(typeDefs, resolvers);
