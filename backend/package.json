@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --forceExit",
-    "start": "NODE_ENV=production babel-node server.js",
+    "start": "jest --forceExit && NODE_ENV=production babel-node server.js",
     "dev": "NODE_ENV=develop nodemon server.js --exec babel-node"
   },
   "keywords": [],

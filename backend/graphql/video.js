@@ -9,10 +9,10 @@ const videoAllData = async context => {
     dataParse = await cache.getApi(context);
     cache.reprocessData(dataParse);
   } else {
-    if (!(await redis.exists('data'))) {
-      await cache.makeCache();
+    if (!(await redis.exists(`${context.LIST_ID}`))) {
+      await cache.makeCache(context);
     }
-    const data = await redis.get('data');
+    const data = await redis.get(`${context.LIST_ID}`);
     dataParse = JSON.parse(data);
   }
 
