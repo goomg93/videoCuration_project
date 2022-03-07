@@ -19,7 +19,7 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 
-const startApolloServer = async (typeDefs, resolvers) => {
+export const startApolloServer = async (typeDefs, resolvers) => {
   try {
     const app = express();
     const expressServer = http.createServer(app);
