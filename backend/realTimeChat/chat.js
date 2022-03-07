@@ -14,12 +14,12 @@ dotenv.config();
 const botName = 'Chat Bot';
 
 const realTimeChat = io => {
-  // io.adapter(
-  //   redisAdapter({
-  //     host: process.env.CONNECT_REDIS_ADAPTER_1,
-  //     port: process.env.CONNECT_REDIS_ADAPTER_PORT,
-  //   })
-  // );
+  io.adapter(
+    redisAdapter({
+      host: process.env.CONNECT_REDIS_ADAPTER_1,
+      port: process.env.CONNECT_REDIS_ADAPTER_PORT,
+    })
+  );
 
   io.of('/').adapter.on('error', error => {
     logger.error('Socker.io-redis connected Error');
