@@ -47,9 +47,19 @@ const usePaginationFetch = (index, limit) => {
   return { loading, error, data, fetchMore };
 };
 
+const useCategoryFetch = () => {
+  const { loading, error, data } = useQuery(gQuery.GET_LIST);
+
+  if (loading) return loading;
+  if (error) return error;
+
+  return { loading, error, data };
+};
+
 const Fetchs = {
   useDataFetch,
   usePaginationFetch,
+  useCategoryFetch,
 };
 
 export default Fetchs;
