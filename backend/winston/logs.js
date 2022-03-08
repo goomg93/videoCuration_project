@@ -1,30 +1,22 @@
 import winston, { format } from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 import winstonMongodb from 'winston-mongodb';
+import moment from 'moment';
+import 'moment-timezone';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const logFormat = format.printf(({ timestamp, label, level, message }) => {
-  return `${timestamp} [${label}] ${level} : ${message}`;
+moment.tz.setDefault('Asia/Seoul');
+const timeStamp = () => moment().format('YYYY-MM-DD HH:mm:ss');
+
+const logFormat = format.printf(({ label, level, message }) => {
+  return `${timeStamp()} [${label}] ${level} : ${message}`;
 });
 
 const combineLogFormat = {
-  MongoDb: format.combine(
-    format.label({ label: 'Vling' }),
-    format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:dd',
-    }),
-    logFormat
-  ),
-  console: format.combine(
-    format.colorize(),
-    format.label({ label: 'Vling' }),
-    format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:dd',
-    }),
-    logFormat
-  ),
+  MongoDb: format.combine(format.label({ label: 'Vling' }), logFormat),
+  console: format.combine(format.colorize(), format.label({ label: 'Vling' }), logFormat),
 };
 
 const opts = (level, format) => {
