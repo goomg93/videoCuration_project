@@ -17,5 +17,5 @@
 
 p {
   /* max-height: 30px; */
-  /* overflow: hidden; */
+  text-overflow: ellipsis;
 }
