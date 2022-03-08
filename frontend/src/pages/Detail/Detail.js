@@ -25,7 +25,6 @@ const DetailLive = () => {
   const [askUser, setAskUser] = useState(true);
 
   useEffect(() => {
-    console.log('Detail.js useEffect- type');
     if (type === 'playlist' && !videoId) {
       setPlaylist(true);
       isPlaying.current = true;
@@ -45,6 +44,11 @@ const DetailLive = () => {
     }
   };
 
+  const handleClose = () => {
+    socket.disconnect();
+    navigate('/');
+  };
+
   return (
     <>
       <div className={styles.background}>
@@ -53,7 +57,7 @@ const DetailLive = () => {
             BZZNBYD
           </Link>
         </h1>
-        <IoClose className={styles.closeBtn} onClick={() => navigate('/')} />
+        <IoClose className={styles.closeBtn} onClick={handleClose} />
       </div>
       {playlist && (
         <section className={styles.Detail}>

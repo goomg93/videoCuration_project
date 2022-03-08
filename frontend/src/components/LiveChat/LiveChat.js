@@ -29,7 +29,7 @@ const LiveChat = ({ socket, askUser, username, setUsername, joinRoom }) => {
       setMessageList(list => [...list, data]);
     });
     socket.on('roomUsers', ({ room, users }) => {
-      users = users.filter(user => user.username !== null);
+      // users = users.filter(user => user.username !== null);
       setUserList([...users]);
     });
   }, [socket]);

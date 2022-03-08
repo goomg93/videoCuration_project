@@ -7,7 +7,7 @@
   border: 1px solid gray;
   border-radius: 10px;
   box-shadow: 5px 5px 10px black;
-  background-color: #f0f0f0;
+  background-color: white;
   z-index: 999;
 }
 
@@ -23,10 +23,33 @@
   scrollbar-width: none;
 }
 
+.userList .avatar {
+  margin-right: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: rgba(178, 94, 223, 0.2);
+  font-size: 25px;
+  /* color: white; */
+}
+
 .userList::-webkit-scrollbar {
   display: none;
 }
 
+.usernames {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
 #myUsername {
   order: -1;
+}
+
+#myUsername .me {
+  padding: 3px 1px;
+  border-radius: 50%;
+  background-color: #202020;
+  font-size: 0.7rem;
+  color: white;
 }

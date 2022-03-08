@@ -1,3 +1,4 @@
+import { BsEmojiSmileUpsideDown } from 'react-icons/bs';
 import styles from './UsersDropDown.module.css';
 
 const UsersDropDown = ({ username, viewUserList, userList }) => {
@@ -7,10 +8,19 @@ const UsersDropDown = ({ username, viewUserList, userList }) => {
         <ul className={styles.userList}>
           {userList.map(user => {
             return String(user.username) !== String(username) ? (
-              <li key={user.user_id}>{user.username}</li>
+              <li key={user.user_id} className={styles.usernames}>
+                <BsEmojiSmileUpsideDown className={styles.avatar} />
+                {user.username}
+              </li>
             ) : (
-              <li key={user.user_id} id={styles.myUsername}>
-                {user.username}(나)
+              <li
+                key={user.user_id}
+                className={styles.usernames}
+                id={styles.myUsername}
+              >
+                <BsEmojiSmileUpsideDown className={styles.avatar} />
+                <span className={styles.me}>me</span>
+                {user.username}
               </li>
             );
           })}
