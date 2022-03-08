@@ -1,28 +1,40 @@
 .PlayerModalArea {
   position: absolute;
   top: 0;
-  z-index: 900;
+  z-index: 30;
 }
 
 .CoverVideo {
   position: absolute;
-  width: 416px;
-  height: 234px;
+  margin-left: -7.5px;
+  top: 0;
+  width: 304px;
+  height: 171px;
   cursor: pointer;
-  z-index: 1000;
-  transform: scale(1.2);
+  z-index: 31;
+  transform: scale(1.1);
 }
 
 .BlockVideo {
   position: absolute;
-  width: 416px;
-  height: 234px;
-  margin-top: -10px;
-  margin-left: -15px;
-  z-index: 2000;
-  transform: scale(1.2);
+  margin-left: -7.5px;
+  top: 0;
+  width: 304px;
+  height: 171px;
+  z-index: 31;
+  transform: scale(1.1);
   color: white;
-  background-color: darkgray;
+}
+
+.YTPlayer {
+  margin-left: -7.5px;
+  transform: scale(1.1);
+}
+
+p {
+  /* position: absolute; */
+  background-color: black;
+  color: white;
 }
 
 a {
@@ -32,10 +44,4 @@ a {
 
 a:hover {
   color: blanchedalmond;
-}
-
-.YTPlayer {
-  margin-top: -10px;
-  margin-left: -15px;
-  transform: scale(1.2);
 }

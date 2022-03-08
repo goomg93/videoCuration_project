@@ -1,5 +1,4 @@
 import { ApolloServer } from 'apollo-server-express';
-import httpHeadersPlugin from 'apollo-server-plugin-http-headers';
 import express from 'express';
 import cache from './cache/mkCache';
 import typeDefs from './graphql/typeDefs';
@@ -9,7 +8,12 @@ import cors from 'cors';
 import socketIO from 'socket.io';
 import http from 'http';
 import realTimeChat from './realTimeChat/chat';
-import { connect } from './mongodb/chatDataHandler';
+import { dbConnect } from './mongodb/chatDataHandler';
+import formatError from './middleware/formatError';
+import authentication from './middleware/auth';
+import routes from './healthyCheck';
+import { logger } from './winston/logs';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -20,29 +24,40 @@ const startApolloServer = async (typeDefs, resolvers) => {
     const app = express();
     const expressServer = http.createServer(app);
     const io = socketIO(expressServer, { cors: { origin: '*' } });
+
     app.use(cors());
+    app.use(routes);
+    app.use(
+      morgan(`${process.env.MORGAN_FORMAT}`, {
+        stream: logger.stream,
+      })
+    );
+
     const apolloServer = new ApolloServer({
       cors: {
         origin: '*',
       },
       typeDefs,
       resolvers,
-      plugins: [httpHeadersPlugin],
-      context: ({ req }) => {
-        return { setCookies: new Array(), setHeaders: new Array(), req };
+      context: async ({ req }) => {
+        const LIST_ID = await authentication(req);
+        return { LIST_ID };
       },
+      formatError,
+      debug: false,
     });
-    connect();
+
+    dbConnect();
     realTimeChat(io);
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
+
     expressServer.listen(PORT, () => {
-      if (process.env.NODE_ENV !== 'production')
-        console.log(`Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`);
+      logger.info(`Server ready at https://www2.wecode.buzzntrend.com:${PORT}`);
     });
   } catch (err) {
-    console.log(err);
+    logger.error(err.message);
   }
 };
 startApolloServer(typeDefs, resolvers);
-cache.cacheSchedule();
+cache.cacheSchedule(process.env.LIST_ID);

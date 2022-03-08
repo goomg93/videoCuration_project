@@ -1,17 +1,23 @@
 const redis = require('redis');
+import dotenv from 'dotenv';
+import { logger } from '../winston/logs';
+
+dotenv.config();
 
 const connectRedisServer = async () => {
-  const client = redis.createClient({
-    url: 'redis://@redis:6379',
-  });
+  try {
+    const client = redis.createClient({
+      url: process.env.CONNECT_REDIS_URL_1,
+    });
 
-  client.on('error', () => {
-    throw new Error('connected error');
-  });
+    await client.connect();
 
-  await client.connect();
-
-  return client;
+    return client;
+  } catch (err) {
+    const error = new Error('Redis connected Error');
+    logger.error(error.message);
+    return false;
+  }
 };
 
 export default connectRedisServer;

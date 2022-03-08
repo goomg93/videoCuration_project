@@ -2,22 +2,23 @@ import cron from 'node-cron';
 import fetch from 'node-fetch-npm';
 import dotenv from 'dotenv';
 import connectRedisServer from './redis';
+import { logger } from '../winston/logs';
 
 dotenv.config();
 
-const cacheSchedule = () => {
+const cacheSchedule = LIST_ID => {
   cron.schedule('00 09 * * *', async () => {
-    await makeCache();
+    await makeCache(LIST_ID);
   });
 };
 
-const makeCache = async () => {
-  let listData = await getApi();
+const makeCache = async context => {
+  let listData = await getApi(context);
   let redis = await connectRedisServer();
   reprocessData(listData);
   listData = JSON.stringify(listData);
-  await redis.set('data', listData);
-  console.log('최신화완료');
+  await redis.set(`${context.LIST_ID}`, listData);
+  logger.info('Update Data');
 };
 
 const reprocessData = data => {
@@ -28,13 +29,14 @@ const reprocessData = data => {
   });
 };
 
-const getApi = async () => {
+const getApi = async context => {
+  const listId = context.LIST_ID || context;
   let endDate = new Date();
   let startDate = new Date(endDate.setDate(endDate.getDate() - 2));
   endDate = endDate.toISOString().substring(0, 10);
   startDate = startDate.toISOString().substring(0, 10);
   const response = await fetch(
-    `https://sandbox.apix.vling.net/v1/video/dlist/${process.env.LIST_ID}?from=0&size=50&startDate=${startDate}&endDate=${endDate}&sort=publishedAt&order=desc`,
+    `https://sandbox.apix.vling.net/v1/video/dlist/${listId}?from=0&size=50&startDate=${startDate}&endDate=${endDate}&sort=publishedAt&order=desc`,
     {
       method: 'GET',
       headers: {
@@ -44,10 +46,10 @@ const getApi = async () => {
     }
   );
   const data = await response.json();
-  if (data === null) {
-    throw new Error('not exsist data');
+  if (!data.data) {
+    throw new Error('NOT EXSIST DATA');
   }
   return data.data;
 };
 
-export default { cacheSchedule, makeCache, getApi };
+export default { cacheSchedule, makeCache, getApi, reprocessData };

@@ -1,13 +1,20 @@
+import { UserInputError } from 'apollo-server-express';
 import connectRedisServer from '../cache/redis';
 import cache from '../cache/mkCache';
 
-const videoAllData = async () => {
+const videoAllData = async context => {
   const redis = await connectRedisServer();
-  if (!(await redis.exists('data'))) {
-    await cache.makeCache();
+  let dataParse;
+  if (!redis) {
+    dataParse = await cache.getApi(context);
+    cache.reprocessData(dataParse);
+  } else {
+    if (!(await redis.exists(`${context.LIST_ID}`))) {
+      await cache.makeCache(context);
+    }
+    const data = await redis.get(`${context.LIST_ID}`);
+    dataParse = JSON.parse(data);
   }
-  const data = await redis.get('data');
-  const dataParse = JSON.parse(data);
 
   const timestampSecond = Math.floor(+new Date() / 1000);
   let totalDurationSeconds = 0;
@@ -40,39 +47,42 @@ const videoAllData = async () => {
   return dataParse;
 };
 
-const videoData = async () => {
-  const redis = await connectRedisServer();
-  if (!(await redis.exists('data'))) {
-    await cache.makeCache();
-  }
-  const data = await redis.get('data');
-  const dataParse = JSON.parse(data);
-
-  return dataParse;
-};
-
 const getVideoDataById = (data, id) => {
   [data] = data.filter(video => video.id === id);
-
   if (data === undefined) {
-    throw new Error('invalid id');
+    throw new UserInputError('Invalid id');
   }
-
   return data;
 };
 
 const getVideoDataByVideoId = (data, videoId) => {
   [data] = data.filter(video => video.videoId === videoId);
-
   if (data === undefined) {
-    throw new Error('invalid videoId');
+    throw new UserInputError('Invalid videoId');
   }
+  return data;
+};
 
+const getVideoDataByIsNow = (data, isNow) => {
+  [data] = data.filter(video => video.isNow === isNow);
+  if (data === undefined) {
+    throw new Error('isNow error');
+  }
   return data;
 };
 
 const videoPagination = (index, limit, data) => {
-  let listData = data.splice(index - 1, limit);
+  let listData = [];
+  let [tmp] = data.filter(video => video.isNow === true);
+
+  data.unshift(tmp);
+
+  if (index === 1) {
+    listData = data.splice(index - 1, limit + 1);
+  } else {
+    listData = data.splice(index, limit);
+  }
+
   return listData;
 };
 
@@ -87,5 +97,5 @@ export default {
   getVideoDataByVideoId,
   videoPagination,
   videoFilterByCategory,
-  videoData,
+  getVideoDataByIsNow,
 };
