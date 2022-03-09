@@ -14,7 +14,7 @@ export default function reducer(state = listStates, action) {
     case SET_PREVIEW:
       return {
         ...state,
-        player: !state.preview,
+        preview: action.payload,
       };
 
     case SET_INDEX:
