@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Category from '../List/ListComponent/Category';
-import { gql, useQuery } from '@apollo/client';
 import dataFetch from '../../hooks/useDataFetch';
 
 const Layout = () => {
