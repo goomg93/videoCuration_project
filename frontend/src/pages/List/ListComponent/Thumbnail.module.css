@@ -5,17 +5,18 @@
 .ThumbnailContainer {
   position: relative;
   margin: 6% auto;
-  background-color: black;
+  background-color: white;
 }
 
 .Thumbnails {
   width: 288px;
   height: 162px;
   cursor: pointer;
-  /* box-shadow: 0 10px 20px gray; */
+  border-radius: 15px;
 }
 
-p {
-  /* max-height: 30px; */
+.Title {
+  max-height: 30px;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
