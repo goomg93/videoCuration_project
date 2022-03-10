@@ -1,0 +1,14 @@
+.youtubeWrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 80%;
+  min-width: 480px;
+}
+
+.youtube {
+  position: absolute;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-width: 480px;
+  height: 100%;
+}

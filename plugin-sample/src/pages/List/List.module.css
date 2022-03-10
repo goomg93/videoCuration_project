@@ -3,19 +3,21 @@
 }
 
 .listArea {
-  margin: 0 auto;
   width: 100%;
-  max-width: 1400px;
   height: 250px;
 }
 
 .lists {
-  width: 90%;
+  width: 100%;
   display: flex;
   margin: auto;
   overflow-x: scroll;
 }
 
 .refSection {
-  padding: 2% 0 2% 2%;
+  margin-right: 5%;
+}
+
+.refSection:last-of-type {
+  margin: 0;
 }

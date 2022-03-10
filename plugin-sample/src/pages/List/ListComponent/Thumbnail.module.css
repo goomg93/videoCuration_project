@@ -10,9 +10,3 @@
   cursor: pointer;
   border-radius: 15px;
 }
-
-.Title {
-  max-height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}

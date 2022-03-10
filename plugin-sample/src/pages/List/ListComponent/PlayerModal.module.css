@@ -1,0 +1,63 @@
+.LoadingAndError {
+  position: absolute;
+}
+
+.PlayerModalArea {
+  position: absolute;
+  top: 0;
+  z-index: 30;
+}
+
+.CoverVideo {
+  position: absolute;
+  /* margin-left: -7.5px; */
+  top: 0;
+  width: 288px;
+  height: 162px;
+  cursor: pointer;
+  z-index: 31;
+  transform: scale(1);
+}
+
+.BlockVideo {
+  position: absolute;
+  /* margin-left: -7.5px; */
+  top: 0;
+  width: 288px;
+  height: 162px;
+  z-index: 31;
+  transform: scale(1);
+  box-shadow: 10px 10px 10px gray;
+  border-radius: 15px;
+  text-align: center;
+  background-color: #595959;
+}
+
+.YTPlayer {
+  /* margin-left: -7.5px; */
+  overflow: hidden;
+  border-radius: 15px;
+  transform: scale(1);
+}
+
+.Block {
+  /* position: absolute; */
+  margin-top: 10%;
+  color: white;
+}
+
+.SecondBlock {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  color: white;
+}
+
+.BlockVideo a {
+  margin-top: 10%;
+  cursor: pointer;
+  color: blue;
+}
+
+.BlockVideo a:hover {
+  color: blanchedalmond;
+}
